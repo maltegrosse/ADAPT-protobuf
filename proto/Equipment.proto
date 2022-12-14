@@ -1,0 +1,237 @@
+syntax = "proto3";
+package AgGateway.ADAPT.ApplicationDataModel.Equipment;
+
+import "Common.proto";
+import "Representations.proto";
+import "LoggedData.proto";
+import "Shapes.proto";
+
+message Connector {
+    CompoundIdentifier Id = 1;
+    int32 DeviceElementConfigurationId = 2;
+    int32 HitchPointId = 3;
+ }
+ enum ConnectorTypeEnum
+ {
+     Unkown = 0;
+     ISO64893TractorDrawbar = 1;
+     ISO730ThreePointHitchSemiMounted = 2;
+     ISO730ThreePointHitchMounted = 3;
+     ISO64891HitchHook = 4;
+     ISO64892ClevisCoupling40 = 5;
+     ISO64894PitonTypeCoupling = 6;
+     ISO56922PivotWagonHitch = 7;
+     ISO24347BallTypeHitch = 8;
+     ChassisMountedSelfPropelled = 9;
+ }
+ enum CornerArmTypeEnum{
+    Leading= 0;
+    Trailing = 1;
+}
+
+message DeviceElement {
+    CompoundIdentifier Id = 1;
+    string Description = 2;
+    string SerialNumber = 3;
+    int32 ManufacturerId = 4;
+    int32 BrandId = 5;
+    int32 SeriesId = 6;
+    repeated ContextItem ContextItems = 7;
+    RepresentationValue DeviceClassification = 8;
+    int32 DeviceModelId = 9;
+    DeviceElementTypeEnum DeviceElementType = 10;
+    int32 ParentDeviceId = 11;
+ }
+ message DeviceElementConfiguration {
+    CompoundIdentifier Id = 1;
+    int32 DeviceElementId = 2;
+    string Description = 3;
+    repeated TimeScope TimeScopes = 4;
+    repeated NumericRepresentationValue Offsets = 5;
+    oneof subtype {
+       ImplementConfiguration ImplementConfiguration = 101;
+       MachineConfiguration MachineConfiguration = 102;
+       SectionConfiguration SectionConfiguration = 103;
+       IrrSectionConfiguration IrrSectionConfiguration = 104;
+       EndgunConfiguration EndgunConfiguration = 105;
+    }
+ }
+
+ enum DeviceElementTypeEnum {
+    Machine = 0;
+    Implement = 1;
+    Sensor = 2;
+    Bin = 3;
+    Section = 4;
+    Unit = 5;
+    Function = 6;
+    IrrSystem = 7; // A mobile or fixed irrigation system such as a center pivot, linear, traveling gun, solid set, etc.
+    IrrSection = 8;// A section of an IrrSystem. Different enough from a regular section to merit its own DeviceElementConfiguration
+    Endgun = 9; // A device attached to an irrigation system that projects water beyond it.
+ }
+
+ message DeviceElementUse {
+    CompoundIdentifier Id = 1;
+    int32 DeviceConfigurationId = 2;
+    int32 OperationDataId = 3;
+    int32 Depth = 4;
+    int32 Order = 5;
+    NumericRepresentationValue TotalDistanceTravelled = 6;
+    NumericRepresentationValue TotalElapsedTime = 7;
+ }
+ message DeviceModel {
+    CompoundIdentifier Id = 1;
+    string Description = 2;
+    int32 SeriesId = 3;
+    int32 BrandId = 4;
+ }
+ message DeviceSeries {
+    CompoundIdentifier Id = 1;
+    string Description = 2;
+    int32 BrandId = 3;
+    repeated ContextItem ContextItems = 4;
+ }
+ message EndgunConfiguration {
+   EndgunTableEntry NominalValues =1;
+   EndgunTable TabularValues = 2;
+ }
+ message EndgunTable {
+     repeated EndgunTableEntry = 1;
+}
+message EndgunTableEntry{
+    NumericRepresentationValue Pressure = 1;
+    NumericRepresentationValue FlowValue = 2;
+    umericRepresentationValue ThrowValue = 3;
+}
+message EquipmentConfiguration {
+   CompoundIdentifier Id = 1;
+   string Description = 2;
+   int32 Connector1Id = 3;
+   int32 Connector2Id = 4;
+   repeated DataLogTrigger DataLogTriggers = 5 [deprecated = true]; // "Data log triggers are assigned on Work Items"
+}
+message EquipmentConfigurationGroup {
+   CompoundIdentifier Id = 1;
+   string Description = 2;
+   repeated EquipmentConfiguration EquipmentConfigurations = 3;
+   repeated TimeScope TimeScopes = 4;
+}
+ message HitchPoint {
+    CompoundIdentifier Id = 1;
+    HitchTypeEnum HitchTypeEnum = 2;
+    ReferencePoint ReferencePoint = 3;
+ }
+ enum HitchTypeEnum {
+    Unkown = 0;
+    ISO64893TractorDrawbar = 1;
+    ISO730ThreePointHitchSemiMounted = 2;
+    ISO730ThreePointHitchMounted = 3;
+    ISO64891HitchHook = 4;
+    ISO64892ClevisCoupling40 = 5;
+    ISO64894PitonTypeCoupling = 6;
+    ISO56922PivotWagonHitch = 7;
+    ISO24347BallTypeHitch = 8;
+ }
+ message ImplementConfiguration {
+    NumericRepresentationValue Width = 1;
+    NumericRepresentationValue TrackSpacing = 2;
+    NumericRepresentationValue PhysicalWidth = 3;
+    NumericRepresentationValue InGroundTurnRadius = 4;
+    NumericRepresentationValue ImplementLength = 5;
+    NumericRepresentationValue VerticalCuttingEdgeZOffset = 6;
+    NumericRepresentationValue GPSReceiverZOffset = 7;
+    NumericRepresentationValue YOffset = 8;
+    ReferencePoint ControlPoint = 9;
+ }
+ enum InstallationDisplacementEnum // Specifies the reference height from which sensor (or logger) vertical displacement is measured
+    {
+        MeanSeaLevel = 0;  // Height / depth is specified relative to mean seal level
+        SoilSurface = 1;   // Height / depth is specified relative to the soil surface
+        CropCanopyTop = 2; // Height / depth is specified relative to the top of the crop canopy
+        Logger  = 3;       // Height / depth is specified relative to the position of the data logger
+    }
+enum IrrErrorCodeEnum
+{
+    Communication = 0;
+    LowPressure = 1;
+    Unspecified = 2;
+}
+enum IrrFlowDataSourceEnum{
+    FlowMeter = 0; // Flow data is being reported by a flow meter 
+    HourMeter = 1; //  Flow data estimated by multiplying time by a constant 
+    Unknown = 2; // Flow data not reported, or source unknown
+}
+enum IrrFlowTagEnum{
+   Chemigating = 0;
+   Fertigating = 1;
+}
+
+enum IrrPressureLocationEnum
+{
+   AtPump =0;
+   AtBaseOfSystem = 1;
+   AtEndOfSystem = 2;
+   Unknown = 3;
+}
+message IrrSectionConfiguration{
+    IrrSectionTypeEnum SectionType = 1;
+    NumericRepresentationValue InnerDistance = 2;
+    NumericRepresentationValue OuterDistance = 3;
+    MultiPolygon SpatialFootprint = 4;
+    NumericRepresentationValue NominalEfficiency = 5;
+
+
+}
+enum IrrSectionTypeEnum{
+    Span = 0;
+    Endboom = 1;
+    EndGun = 2;
+    Corner = 3;
+    WrapBender = 4;
+    Fixed = 5;
+    Generic = 6;
+}
+message IrrSystemModel{
+    IrrSystemTypeEnum SysType = 1;
+}
+
+message MachineConfiguration {
+    NumericRepresentationValue GpsReceiverXOffset = 1;
+    NumericRepresentationValue GpsReceiverYOffset = 2;
+    NumericRepresentationValue GpsReceiverZOffset = 3;
+    OriginAxleLocationEnum OriginAxleLocation = 4;
+ }
+ enum OriginAxleLocationEnum {
+    Front = 0;
+    Rear = 1;
+ }
+
+ message ReferencePoint {
+   CompoundIdentifier Id = 1;
+   NumericRepresentationValue XOffset = 2;
+   NumericRepresentationValue YOffset = 3;
+   NumericRepresentationValue ZOffset = 4;
+ }
+ message SectionConfiguration {
+    NumericRepresentationValue SectionWidth = 0;
+    NumericRepresentationValue LateralOffset = 1;
+    NumericRepresentationValue InlineOffset = 2;
+ }
+ enum TelemetryMediumEnum // Specifies the type of telemetry used by a device to send/receive data.
+{
+   Radio = 0; // The device uses a radio transmitter to send/receive data. 
+   Satellite= 1;     // The device uses a satellite system to send/receive data. 
+   Hardwired= 2;     // The device uses a physical connection (e.g., current loop, I2C, etc.) to send/receive data. 
+   CellularRadio = 3; // The device uses cellular telephony to send/receive data.
+   Other = 4;         // The device uses an option not described above to send/receive data.
+                  // Do not use "Other" to replace "unknown"; if the telemetry medium is unknown, leave the corresponding data field empty.
+}
+
+enum TimeDataSourceEnum{
+    GPSOnEvent = 0; // The timestamp is created using GPS data, when the event happens. (Most accurate)
+    DeviceClockOnEvent = 1; // The timestamp is created using data from a realtime clock on the controller, panel, or device, when the event happens.
+    ServerclockOnTransmission = 2; // The timestamp is created using data from the server receiving the event data. 
+    DeviceClockOnTransmission = 3; // The timestamp is created using data from a realtime clock on the controller, panel or device, when the event data is transmitted. 
+    ManualInput = 4; // The timestamp is input manually by an operator, asynchronously to the creation or transmission of the event.
+    Unknown = 5;// The origin of timestamp data is unknown.
+}

@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package AgGateway.ADAPT.ApplicationDataModel.Shapes;
+
+import "Common.proto";
+import "Representations.proto";
+
+message BoundingBox {
+    NumericRepresentationValue MinY = 1;
+    NumericRepresentationValue MinX = 2;
+    NumericRepresentationValue MaxY = 3;
+    NumericRepresentationValue MaxX = 4;
+ }
+
+ message LineString {
+    repeated Shape Points = 1;
+ }
+ message LinearRing {
+    repeated Shape Points = 1;
+ }
+ message MultiLineString {
+    repeated Shape LineStrings = 1;
+ }
+ message MultiPoint {
+    repeated Shape Points = 1;
+ }
+ message MultiPolygon {
+    repeated Shape Polygons = 1;
+ }
+ message Point {
+    double X = 1;
+    double Y = 2;
+    double Z = 3;
+ }
+ message Polygon {
+    LinearRing ExteriorRing = 1;
+    repeated LinearRing InteriorRings = 2;
+ }
+
+ message Shape {
+   int32 Id = 1;
+   ShapeTypeEnum Type = 2;
+   oneof subtype {
+      LinearRing LinearRing = 101;
+      LineString LineString = 102;
+      MultiLineString MultiLineString = 103;
+      MultiPoint MultiPoint = 104;
+      MultiPolygon MultiPolygon = 105;
+      Point Point = 106;
+      Polygon Polygon = 107;
+   }
+ }
+ enum ShapeTypeEnum {
+    LinearRing = 0;
+    LineString = 1;
+    MultiLineString = 2;
+    MultiPoint = 3;
+    MultiPolygon = 4;
+    Point = 5;
+    Polygon = 6;
+    RasterGrid = 7;
+ }

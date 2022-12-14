@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package AgGateway.ADAPT.ApplicationDataModel.Representations;
+
+import "Common.proto";
+
+
+message RepresentationValue {
+   int32 Code = 1;
+   string Designator = 2;
+   int32 Color = 3;
+}
+
+message EnumeratedRepresentation {
+    repeated EnumerationMember EnumeratedMembers = 1;
+    int32 RepresentationGroupId = 2;
+ }
+ message EnumeratedRepresentationGroup {
+    CompoundIdentifier Id = 1;
+    string Description = 2;
+ }
+ message EnumeratedValue {
+    Representation Representation = 1 ; 
+    EnumerationMember Value = 2;
+ }
+ message EnumerationMember {
+    int32 Code = 1;
+    string Value = 2;
+ }
+ message NumericRepresentation {
+    int32 DecimalDigits = 1;
+    NumericValue MinValue = 2;
+    NumericValue MaxValue = 3;
+    UnitOfMeasureDimensionEnum Dimension = 4;
+ }
+ message NumericRepresentationValue {
+   Representation Representation = 1 ; 
+   NumericValue Value = 2;
+   UnitOfMeasure UserProvidedUnitOfMeasure = 3; 
+ }
+ message NumericValue {
+    double Value = 1;
+    UnitOfMeasure UnitOfMeasure = 2 ; 
+ }
+ enum RepresentationCodeSourceEnum {
+    ADAPT = 0;
+    ISO11783_DDI = 1;
+    ISO11783_SPN = 2;
+    J1939_SPN = 3;
+    User_Defined = 4;
+ }
+ message Representation {
+    CompoundIdentifier Id = 1;
+    RepresentationCodeSourceEnum CodeSource = 2;
+    string Code = 3;
+    string Description = 4;
+    string LongDescription = 5;
+    oneof subtype {
+       EnumeratedRepresentation EnumeratedRepresentation = 101;
+       NumericRepresentation NumericRepresentation = 102;
+       StringRepresentation StringRepresentation = 103;
+    }
+ }
+
+ message RepresentationValue {
+    int32 Code = 1;
+    string Designator = 2;
+    int32 Color = 3;
+    oneof subtype {
+       EnumeratedValue EnumeratedValue = 101;
+       NumericRepresentationValue NumericRepresentationValue = 102;
+       StringValue StringValue = 103;
+    }
+ }
+ message StringRepresentation {
+    int32 MinCharacters = 1;
+    int32 MaxCharacters = 2;
+ }
+ message StringValue {
+    Representation Representation = 1 ;
+    string Value = 2;
+ }

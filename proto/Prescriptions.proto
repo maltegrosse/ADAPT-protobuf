@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package AgGateway.ADAPT.ApplicationDataModel.Prescriptions;
+
+import "Common.proto";
+import "Representations.proto";
+import "Products.proto";
+import "Shapes.proto";
+
+enum ApplicationStrategyEnum {
+    RatePerArea = 0;
+    RatePerTank = 1;
+    TotalProduct = 2;
+ }
+
+ message ManualPrescription {
+    repeated ProductUse ProductUses = 1;
+    NumericRepresentationValue TotalArea = 2;
+    NumericRepresentationValue TankAmount = 3;
+    double TotalTanks = 4;
+    ApplicationStrategyEnum ApplicationStrategy = 5;
+ }
+
+ message RadialExtent {
+    NumericRepresentationValue StartAngle = 1;
+    NumericRepresentationValue EndAngle = 2;
+    int32 SectionId = 3;
+    NumericRepresentationValue InnerRadius = 4;
+    NumericRepresentationValue OuterRadius = 5;
+    Point RotCtr = 6;
+ }
+message RadialLookupCollection {
+    repeated RxRadialLookup RadialLookups = 1;
+    NumericRepresentationValue StartAngle =2 ;
+    NumericRepresentationValue EndAngle = 3;
+    Point RotCtr = 4;
+    repeated RxShapeLookup ShapeLookups = 5;
+}
+message RadialPrescription {
+    repeated RadialLookupCollection RadialLookupCollections = 1;
+}
+
+message RasterGridPrescription {
+    Shape Origin = 1;
+    int32 RowCount = 2;
+    int32 ColumnCount = 3;
+    NumericRepresentationValue CellWidth = 4;
+    NumericRepresentationValue CellHeight = 5;
+    repeated RxCellLookup Rates = 6;
+ }
+
+ message RxCellLookup {
+    repeated RxRate RxRates = 1;
+ }
+ message RxRate {
+    double Rate = 1;
+    int32 RxProductLookupId = 2;
+ }
+ 
+ message RxProductLookup {
+    CompoundIdentifier Id = 1;
+    int32 ProductId = 2;
+    NumericRepresentation Representation = 3; 
+    UnitOfMeasure UnitOfMeasure = 4; 
+    NumericRepresentationValue OutOfFieldRate = 5;
+    NumericRepresentationValue LossOfGpsRate = 6;
+ }
+
+ message RxRadialLookup {
+   RadialExtent Extent = 1;
+   repeated RxRate RxRates  = 2;
+ }
+ message RxShapeLookup {
+    Shape Shape = 1;
+    repeated RxRate Rates = 2;
+ }
+
+ message SpatialPrescription {
+    BoundingBox BoundingBox = 1;
+    RepresentationValue OutOfFieldRate = 2;
+    RepresentationValue LossOfGpsRate = 3;
+    oneof subtype {
+       RasterGridPrescription RasterGridPrescription = 101;
+       VectorPrescription VectorPrescription = 102;
+    }
+ }
+ message VectorPrescription {
+    repeated RxShapeLookup RxShapeLookups = 1;
+ }

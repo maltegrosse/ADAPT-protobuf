@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package AgGateway.ADAPT.ApplicationDataModel.Notes;
+
+import "Common.proto";
+import "Shapes.proto";
+import "Representations.proto";
+
+message Note {
+    string Description = 1;
+    EnumeratedValue Value = 2;
+    repeated TimeScope TimeStamps = 3;
+    Shape SpatialContext = 4;
+ }

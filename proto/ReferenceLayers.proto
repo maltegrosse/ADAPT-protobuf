@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package AgGateway.ADAPT.ApplicationDataModel.ReferenceLayers;
+
+import "Common.proto";
+import "Representations.proto";
+import "Shapes.proto";
+
+message RasterData {
+   Representation Representation = 1 ; 
+   oneof subtype {
+   RasterDataEnumeratedRepresentation RasterDataEnumeratedRepresentation = 101;
+   RasterDataNumericRepresentation RasterDataNumericRepresentation = 102;
+   RasterDataStringRepresentation RasterDataStringRepresentation = 103;
+   }
+}
+message RasterDataEnumeratedRepresentation{
+   repeated EnumeratedValue Values = 1;
+}
+message RasterDataNumericRepresentation{
+   repeated NumericRepresentationValue Values = 1;
+}
+message RasterDataStringRepresentation{
+   repeated StringValue Values = 1;
+}
+message ReferenceLayer {
+    CompoundIdentifier Id = 1;
+    string Description = 2;
+    ReferenceLayerTypeEnum LayerType = 3;
+    repeated TimeScope TimeScopes = 4;
+    Polygon BoundingPolygon = 5;
+    repeated ContextItem ContextItems = 6;
+    repeated int32 FieldIds = 7 ;
+    repeated int32 CropZoneIds = 8 ;
+    oneof subtype {
+       RasterReferenceLayer RasterReferenceLayer = 101;
+       ShapeReferenceLayer ShapeReferenceLayer = 102;
+    }
+ }
+
+
+message RasterReferenceLayer {
+   Shape Origin = 1;
+   int32 RowCount = 2;
+   int32 ColumnCount = 3;
+   NumericRepresentationValue CellWidth = 4;
+   NumericRepresentationValue CellHeight = 5;
+   repeated RasterData RasterData = 6;
+}
+
+ enum ReferenceLayerTypeEnum {
+    BackgroundImage = 0;
+    CommonLandUnit = 1;
+    ElevationMap = 2;
+    ManagementZone = 3;
+    Obstacles = 4;
+    ProfitMap = 5;
+    SoilTypeMap = 6;
+    VarietyLocator = 7;
+ }
+ message ShapeLookup {
+    Shape Shape = 1;
+    SpatialAttribute SpatialAttribute = 2;
+ }
+ message SpatialAttribute {
+   repeated RepresentationValue Values = 1;
+}
+ message ShapeReferenceLayer {
+    repeated ShapeLookup ShapeLookups = 1;
+ }

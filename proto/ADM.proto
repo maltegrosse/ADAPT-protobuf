@@ -1,0 +1,114 @@
+syntax = "proto3";
+
+package AgGateway.ADAPT.ApplicationDataModel.ADM;
+
+import "Common.proto";
+import "Documents.proto";
+import "Equipment.proto";
+import "FieldBounderies.proto";
+import "Guidance.proto";
+import "LoggedData.proto";
+import "Logistics.proto";
+import "Notes.proto";
+import "Prescriptions.proto";
+import "Products.proto";
+import "ReferenceLayers.proto";
+import "Representations.proto";
+import "Shapes.proto";
+
+
+message ApplicationDataModel {
+   repeated ProprietaryValue ProprietaryValues = 1;
+   Catalog Catalog = 2;
+   Documents Documents = 3;
+   repeated ReferenceLayers ReferenceLayer = 4;
+ }
+
+
+ message ProprietaryValue {
+   int32 Key = 1;
+   string Value = 2;
+ }
+
+ message Properties {
+   map<string, string> Properties = 3;
+
+ }
+ 
+ message Catalog {
+   repeated Brand Brands = 1;
+   repeated Company Companies = 2;
+   repeated Connector Connectors = 3;
+   repeated ContactInfo ContactInfo = 4;
+   repeated Crop Crops = 5;
+   repeated CropZone CropZones = 6;
+   string Description = 7;
+   repeated DeviceElement DeviceElements = 8;
+   repeated DeviceModel DeviceModels = 9;
+   repeated DeviceElementConfiguration DeviceElementConfigurations = 10;
+   repeated EquipmentConfiguration EquipmentConfigurations = 11;
+   repeated EquipmentConfigurationGroup EquipmentConfigurationGroups = 12;
+   repeated Farm Farms = 13;
+   repeated Field Fields = 14;
+   repeated FieldBoundary FieldBoundaries = 15;
+   repeated Grower Growers = 16;
+   repeated GuidancePattern GuidancePatterns = 17;
+   repeated GuidanceGroup GuidanceGroups = 18;
+   repeated HitchPoint HitchPoints = 19;
+   repeated Ingredient Ingredients = 20;
+   repeated Manufacturer Manufacturers = 21;
+   repeated Person Persons = 22;
+   repeated PersonRole PersonRoles = 23;
+   repeated Prescription Prescriptions = 24;
+   repeated Product Products = 25;
+   repeated TimeScope TimeScopes = 26;
+   // following fields added
+   repeated GeoPoliticalContext GeoPoliticalContexts = 27;
+   repeated Facility Facilities = 28;
+   repeated IrrSystemConfiguration IrrSystemConfigurations = 29;
+   repeated IrrSectionConfiguration IrrSectionConfigurations  = 30;
+   repeated EndgunConfiguration EndgunConfigurations  = 31;
+   repeated Place Places = 32;
+   repeated ContainerModel ContainerModels = 33;
+   repeated PackagedProduct PackagedProducts = 34;
+   repeated PackagedProductInstance PackagedProductInstances = 35;
+   repeated Container Containers = 37;
+   repeated ObsCodeComponent ObsCodeComponents = 38;
+ }
+ message Documents {
+   repeated DeviceElementUse DeviceElementUses = 1;
+   repeated DocumentCorrelation DocumentCorrelations = 2;
+   repeated GuidanceAllocation GuidanceAllocations = 3;
+   repeated IrrCollection IrrCollections = 4;
+   repeated IrrRecord IrrRecords = 5;
+   repeated Load Loads = 6;
+   repeated LoggedData LoggedData = 7;
+   int32 LoggedDataCatalog  = 8;
+   repeated Obs Obs = 9; 
+   repeated ObsCollection ObsCollections  = 10;
+   repeated ObsDataset ObsDatasets = 11;
+   repeated Observations Observations = 12;
+   repeated Plan Plans = 13;
+   repeated Recommendation Recommendations = 14;
+   repeated Summary Summaries = 15;
+   repeated WorkItemOperation WorkItemOperations = 16;
+   repeated WorkItem WorkItems = 17;
+   repeated WorkOrder WorkOrders = 18;
+   repeated WorkRecord WorkRecords  = 19;
+ }
+ message Prescription {
+   CompoundIdentifier Id = 1;
+   string Description = 2;
+   OperationTypeEnum OperationType = 3;
+   int32 FieldId = 4;
+   int32 CropZoneId = 5;
+   repeated RxProductLookup RxProductLookups = 6;
+   repeated int32 ProductIds = 7 [packed = false];
+   repeated ContextItem ContextItems = 8;
+   repeated TimeScope TimeScopes = 9;
+   repeated PersonRole PersonRoles = 10;
+   oneof subtype {
+      ManualPrescription ManualPrescription = 101;
+      SpatialPrescription SpatialPrescription = 102;
+   }
+}

@@ -1,0 +1,138 @@
+syntax = "proto3";
+
+package AgGateway.ADAPT.ApplicationDataModel.LoggedData;
+
+import "Common.proto";
+import "Notes.proto";
+import "Equipment.proto";
+import "Representations.proto";
+
+message LoggedData {
+   CompoundIdentifier Id = 1;
+   repeated TimeScope TimeScopes = 2;
+   repeated int32 PersonRoleIds = 3 ;
+   repeated int32 GuidanceAllocationIds = 4 ;
+   repeated int32 WorkItemIds = 5 ;
+   int32 SummaryId = 6;
+   repeated Note Notes = 7;
+   repeated OperationData OperationData = 8;
+   int32 WorkRecordId = 15;
+   int32 GrowerId = 16;
+   int32 FarmId = 17;
+   int32 FieldId = 18;
+   int32 CropZoneId = 19;
+   EquipmentConfigurationGroup EquipmentConfigurationGroup = 20;
+   string Description = 21;
+   repeated CalibrationFactor CalibrationFactors = 22;
+}
+
+message CalibrationFactor {
+    CompoundIdentifier Id = 1;
+    int32 MeterId = 2;
+    repeated int32 TimeScopeIds = 3 ;
+    RepresentationValue Value = 4;
+    int32 OperationDataId = 5;
+ }
+ message DataLogTrigger {
+   CompoundIdentifier Id = 1;
+   repeated LoggingMethodEnum DataLogMethods = 2;
+   NumericRepresentationValue DataLogDistanceInterval = 3;
+   NumericRepresentationValue DataLogTimeInterval = 4;
+   NumericRepresentationValue DataLogThresholdMinimum = 5;
+   NumericRepresentationValue DataLogThresholdMaximum = 6;
+   NumericRepresentationValue DataLogThresholdChange = 7;
+   repeated ContextItem ContextItems = 8;
+   LoggingLevelEnum LoggingLevel = 9;
+   Representation Representation = 10 ; 
+   bool RequestDefaultProcessData = 11;
+   int32 DeviceElementId = 12;
+ }
+ enum LoggingLevelEnum{
+   MachineType= 0;
+   SpecificMachine = 1;
+   ImplementType = 2;
+   SpecificImplement = 3;
+   SpecificSection = 4;
+   SpecificMeter = 5;
+   Unspecified = 6;
+ }
+ message EnumeratedWorkingData {
+    repeated int32 ValueCodes = 1 ;
+ }
+
+ message Load {
+    CompoundIdentifier Id = 1;
+    string Description = 2;
+    repeated TimeScope TimeScopes = 3;
+    string LoadNumber = 4;
+    LoadTypeEnum LoadType = 5;
+    NumericRepresentationValue LoadQuantity = 6;
+    repeated int32 DestinationIds = 7 ;
+    repeated ContextItem ContextItems = 8;
+    int32 ObservationsId = 9; // 20190430 Added O&M support
+    int32 ObsCollectionId = 10; // 20190819 Added reference to a specific ObsCollection to hold this load's observations
+ }
+ enum LoadTypeEnum {
+    Unknown = 0;
+    Tank = 1;
+    Field = 2;
+    Truck = 3;
+    Bale = 4;
+    Module = 5;
+ }
+
+ enum LoggingMethodEnum{
+   TimeInterval = 0;
+   DistanceInterval = 1;
+   ThresholdLimits = 2;
+   OnChange = 3;
+   Total = 4;
+}
+
+message NumericWorkingData {
+    UnitOfMeasure UnitOfMeasure = 1 ; 
+    repeated double Values = 2 ;
+}
+
+message OperationData {
+    CompoundIdentifier Id = 1;
+    int32 LoadId = 2;
+    OperationTypeEnum OperationType = 3;
+    int32 PrescriptionId = 4;
+    repeated int32 ProductIds = 5 ;
+    int32 VarietyLocatorId = 6;
+    int32 WorkItemOperationId = 7;
+    int32 MaxDepth = 8;
+    int32 SpatialRecordCount = 9;
+    repeated int32 EquipmentConfigurationIds = 10 ;
+    string Description = 11;
+    repeated int32 CoincidentOperationDataIds = 12;
+    repeated ContextItem ContextItems = 13;
+ }
+
+ message SectionSummary {
+    CompoundIdentifier Id = 1;
+    int32 SectionId = 2;
+    NumericRepresentationValue TotalDistanceTravelled = 3;
+    NumericRepresentationValue TotalElapsedTime = 4;
+ }
+
+ message SpatialRecord {
+    Shape Geometry = 1;
+    Timestamp Timestamp = 2;
+    map<int32, RepresentationValue>  MeterValues = 3;
+    map<int32, int32>  AppliedLatencyValues = 4;
+    RepresentationValue SignalType = 5;
+ }
+
+ message WorkingData {
+   CompoundIdentifier Id = 1;
+   int32 DeviceElementUseId = 2;
+   Representation Representation = 3 ; 
+   RepresentationValue AppliedLatency = 4;
+   RepresentationValue ReportedLatency = 5;
+   oneof subtype {
+      EnumeratedWorkingData EnumeratedWorkingData = 101;
+      NumericWorkingData NumericWorkingData = 102;
+   }
+ }

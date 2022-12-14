@@ -1,0 +1,40 @@
+
+syntax = "proto3";
+
+package AgGateway.ADAPT.ApplicationDataModel.FieldBounderies;
+
+import "Common.proto";
+import "Representations.proto";
+import "Shapes.proto";
+
+message ConstantOffsetHeadland {
+    RepresentationValue Value = 1;
+ }
+ message DrivenHeadland {
+    Shape SpatialData = 1;
+ }
+ message FieldBoundary {
+    CompoundIdentifier Id = 1;
+    string Description = 2;
+    int32 FieldId = 3;
+    Shape SpatialData = 4;
+    repeated TimeScope TimeScopes = 5;
+    repeated Headland Headlands = 6;
+    GpsSource GpsSource = 7;
+    string OriginalEpsgCode = 8;
+    repeated InteriorBoundaryAttribute InteriorBoundaryAttributes = 9;
+    repeated ContextItem ContextItems = 10;
+ }
+
+ message Headland {
+    string Description = 1;
+    oneof subtype {
+       ConstantOffsetHeadland ConstantOffsetHeadland = 101;
+       DrivenHeadland DrivenHeadland = 102;
+    }
+ }
+ message InteriorBoundaryAttribute {
+    Shape Shape = 1;
+    bool IsPassable = 2;
+    string Description = 3;
+ }
