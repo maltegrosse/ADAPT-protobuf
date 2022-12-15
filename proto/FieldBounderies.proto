@@ -16,7 +16,7 @@ message ConstantOffsetHeadland {
  message FieldBoundary {
     CompoundIdentifier Id = 1;
     string Description = 2;
-    int32 FieldId = 3;
+    int64 FieldId = 3;
     Shape SpatialData = 4;
     repeated TimeScope TimeScopes = 5;
     repeated Headland Headlands = 6;

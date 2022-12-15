@@ -4,7 +4,7 @@ import "Logistics.proto";
 import "google/protobuf/timestamp.proto";
 
 message CompoundIdentifier {
-   int32 ReferenceId = 1;
+   int64 ReferenceId = 1;
    repeated UniqueId UniqueIds = 2;
 }
 message ContextItem {
@@ -19,15 +19,15 @@ message ContextItemDefinition {
    repeated string Keywords = 2;
    repeated Lexicalization Lexicalizations = 3;
    repeated ContextItem Properties = 4;
-   repeated int32 NestedDefIds = 5 [packed = false];
+   repeated int64 NestedDefIds = 5 ;
    repeated Presentation Presentations = 6;
    repeated ContextItemEnumItem EnumItems = 7;
    repeated TimeScope TimeScopes = 8;
-   repeated int32 ModelScopeIds = 9 [packed = false];
-   repeated int32 GeoPoliticalContextIds = 10 [packed = false];
-   int32 ParentId = 15;
+   repeated int64 ModelScopeIds = 9 ;
+   repeated int64 GeoPoliticalContextIds = 10 ;
+   int64 ParentId = 15;
    string Code = 16;
-   int32 Version = 17;
+   int64 Version = 17;
    ContextItemValueTypeEnum ValueType = 18;
    string Description = 19;
    string AgGlossaryURL = 20;
@@ -45,7 +45,7 @@ enum ContextItemValueTypeEnum {
 }
 message ContextItemEnumItem {
    string Value = 0;
-   int32 Version = 1;
+   int64 Version = 1;
    string Description = 2;
    string AgGlossaryURL = 3 ;
    string AgrovocURL = 4 ;
@@ -132,8 +132,8 @@ message Language {
 }
 message Lexicalization {
    string Text = 1;
-   int32 LanguageId = 2;
-   repeated int32 GeoPoliticalContextIds = 3;
+   int64 LanguageId = 2;
+   repeated int64 GeoPoliticalContextIds = 3;
 }
 message ModelScope {
    CompoundIdentifier Id = 1;
@@ -168,7 +168,7 @@ message Presentation {
    string Description = 1;
    string EntryFormatRegEx = 2;
    string DisplayFormatRegEx = 3;
-   repeated int32 GeoPoliticalContextIds = 4 [packed = false];
+   repeated int64 GeoPoliticalContextIds = 4 [packed = false];
 }
 
 enum SetupDataPedigreeEnum  {

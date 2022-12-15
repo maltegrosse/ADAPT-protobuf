@@ -10,14 +10,14 @@ import "google/protobuf/timestamp.proto";
 message Brand {
     CompoundIdentifier Id = 1;
     string Description = 2;
-    int32 ManufacturerId = 3;
+    int64 ManufacturerId = 3;
     repeated ContextItem ContextItems = 4;
  }
 
  message Company {
     CompoundIdentifier Id = 1;
     string Name = 2;
-    int32 ContactInfoId = 3;
+    int64 ContactInfoId = 3;
     repeated ContextItem ContextItems = 4;
  }
 
@@ -49,35 +49,35 @@ message Brand {
     CompoundIdentifier Id = 1;
     repeated TimeScope TimeScopes = 2;
     string Description = 3;
-    int32 FieldId = 4;
-    int32 CropId = 5;
+    int64 FieldId = 4;
+    int64 CropId = 5;
     NumericRepresentationValue Area = 6;
     MultiPolygon BoundingRegion = 7;
     GpsSource BoundarySource = 8;
     repeated Note Notes = 9;
-    repeated int32 GuidanceGroupIds = 10 ;
+    repeated int64 GuidanceGroupIds = 10 ;
     repeated ContextItem ContextItems = 11;
  }
  message Destination {
     CompoundIdentifier Id = 1;
     string Description = 2;
     Location Location = 3;
-    int32 FacilityId = 4;
+    int64 FacilityId = 4;
  }
  message Facility {
     CompoundIdentifier Id = 1;
-    int32 CompanyId = 2;
+    int64 CompanyId = 2;
     string Description = 3;
     ContactInfo ContactInfo = 4;
     RepresentationValue FacilityType = 5;
     repeated ContextItem ContextItems = 6;
-    int32 ParentFacilityId = 7;
+    int64 ParentFacilityId = 7;
  }
 
  message Farm {
     CompoundIdentifier Id = 1;
     string Description = 2;
-    int32 GrowerId = 3;
+    int64 GrowerId = 3;
     ContactInfo ContactInfo = 4;
     repeated TimeScope TimeScopes = 5;
     repeated ContextItem ContextItems = 6;
@@ -86,16 +86,16 @@ message Brand {
  message Field {
     CompoundIdentifier Id = 1;
     string Description = 2;
-    int32 FarmId = 3;
+    int64 FarmId = 3;
     NumericRepresentationValue Area = 4;
-    int32 ActiveBoundaryId = 5;
+    int64 ActiveBoundaryId = 5;
     repeated ContextItem ContextItems = 6;
     NumericRepresentationValue Slope = 7;
     NumericRepresentationValue Aspect = 8;
     NumericRepresentationValue SlopeLength = 9;
-    repeated int32 GuidanceGroupIds = 10 [packed = false];
+    repeated int64 GuidanceGroupIds = 10 [packed = false];
     repeated TimeScope TimeScopes = 11;
-    int32 GrowerId = 12;
+    int64 GrowerId = 12;
 
  }
  enum GLNEnum
@@ -107,7 +107,7 @@ message GpsSource {
     NumericRepresentationValue EstimatedPrecision = 2;
     NumericRepresentationValue HorizontalAccuracy = 3;
     NumericRepresentationValue VerticalAccuracy = 4;
-    int32 NumberOfSatellites = 5;
+    int64 NumberOfSatellites = 5;
     Timestamp GpsUtcTime = 6;
     }
 enum GpsSourceEnum {
@@ -144,7 +144,7 @@ message Grower {
     Point Position = 1;
     repeated ContextItem ContextItems = 2;
     GpsSource GpsSource = 3;
-    int32 ParentFacilityId = 4;
+    int64 ParentFacilityId = 4;
  }
  message Manufacturer {
     CompoundIdentifier Id = 1;
@@ -154,8 +154,8 @@ message Grower {
  message PermittedProduct {
     CompoundIdentifier Id = 1;
     repeated TimeScope TimeScopes = 2;
-    int32 GrowerId = 3;
-    int32 ProductId = 4;
+    int64 GrowerId = 3;
+    int64 ProductId = 4;
     repeated ContextItem ContextItems = 5;
  }
 
@@ -165,29 +165,29 @@ message Grower {
     string MiddleName = 3;
     string LastName = 4;
     string CombinedName = 5;
-    int32 ContactInfoId = 6;
+    int64 ContactInfoId = 6;
     repeated ContextItem ContextItems = 7;
  }
 
  message PersonRole {
     CompoundIdentifier Id = 1;
-    int32 PersonId = 2;
+    int64 PersonId = 2;
     RepresentationValue Role = 3;
-    int32 GrowerId = 4;
+    int64 GrowerId = 4;
     repeated TimeScope TimeScopes = 5;
-    int32 CompanyId = 6;
+    int64 CompanyId = 6;
  }
 
  message Place{
     CompoundIdentifier Id = 1;
     string Description = 2;
     PlaceTypeEnum PlaceType = 3;
-    int32 DeviceElementId = 4; // Allows associating an observation or ProductContainerOperation to a DeviceElement
-    int32 ContainerId = 5;// Allows associating an observation or ProductContainerOperation to a Container
-    int32 FarmId = 6;
-    int32 FieldId = 7;
-    int32 CropZoneId = 8;
-    int32 FacilityId = 9;
+    int64 DeviceElementId = 4; // Allows associating an observation or ProductContainerOperation to a DeviceElement
+    int64 ContainerId = 5;// Allows associating an observation or ProductContainerOperation to a Container
+    int64 FarmId = 6;
+    int64 FieldId = 7;
+    int64 CropZoneId = 8;
+    int64 FacilityId = 9;
     Location Location = 10; // Enables using Locations by reference, like in PAIL and ISO 19112.
     repeated ContextItem ContextItems = 11;
  }

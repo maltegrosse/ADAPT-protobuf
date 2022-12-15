@@ -8,8 +8,8 @@ import "Shapes.proto";
 
 message Connector {
     CompoundIdentifier Id = 1;
-    int32 DeviceElementConfigurationId = 2;
-    int32 HitchPointId = 3;
+    int64 DeviceElementConfigurationId = 2;
+    int64 HitchPointId = 3;
  }
  enum ConnectorTypeEnum
  {
@@ -33,18 +33,18 @@ message DeviceElement {
     CompoundIdentifier Id = 1;
     string Description = 2;
     string SerialNumber = 3;
-    int32 ManufacturerId = 4;
-    int32 BrandId = 5;
-    int32 SeriesId = 6;
+    int64 ManufacturerId = 4;
+    int64 BrandId = 5;
+    int64 SeriesId = 6;
     repeated ContextItem ContextItems = 7;
     RepresentationValue DeviceClassification = 8;
-    int32 DeviceModelId = 9;
+    int64 DeviceModelId = 9;
     DeviceElementTypeEnum DeviceElementType = 10;
-    int32 ParentDeviceId = 11;
+    int64 ParentDeviceId = 11;
  }
  message DeviceElementConfiguration {
     CompoundIdentifier Id = 1;
-    int32 DeviceElementId = 2;
+    int64 DeviceElementId = 2;
     string Description = 3;
     repeated TimeScope TimeScopes = 4;
     repeated NumericRepresentationValue Offsets = 5;
@@ -72,23 +72,23 @@ message DeviceElement {
 
  message DeviceElementUse {
     CompoundIdentifier Id = 1;
-    int32 DeviceConfigurationId = 2;
-    int32 OperationDataId = 3;
-    int32 Depth = 4;
-    int32 Order = 5;
+    int64 DeviceConfigurationId = 2;
+    int64 OperationDataId = 3;
+    int64 Depth = 4;
+    int64 Order = 5;
     NumericRepresentationValue TotalDistanceTravelled = 6;
     NumericRepresentationValue TotalElapsedTime = 7;
  }
  message DeviceModel {
     CompoundIdentifier Id = 1;
     string Description = 2;
-    int32 SeriesId = 3;
-    int32 BrandId = 4;
+    int64 SeriesId = 3;
+    int64 BrandId = 4;
  }
  message DeviceSeries {
     CompoundIdentifier Id = 1;
     string Description = 2;
-    int32 BrandId = 3;
+    int64 BrandId = 3;
     repeated ContextItem ContextItems = 4;
  }
  message EndgunConfiguration {
@@ -106,8 +106,8 @@ message EndgunTableEntry{
 message EquipmentConfiguration {
    CompoundIdentifier Id = 1;
    string Description = 2;
-   int32 Connector1Id = 3;
-   int32 Connector2Id = 4;
+   int64 Connector1Id = 3;
+   int64 Connector2Id = 4;
    repeated DataLogTrigger DataLogTriggers = 5 [deprecated = true]; // "Data log triggers are assigned on Work Items"
 }
 message EquipmentConfigurationGroup {

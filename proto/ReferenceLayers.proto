@@ -30,8 +30,8 @@ message ReferenceLayer {
     repeated TimeScope TimeScopes = 4;
     Polygon BoundingPolygon = 5;
     repeated ContextItem ContextItems = 6;
-    repeated int32 FieldIds = 7 ;
-    repeated int32 CropZoneIds = 8 ;
+    repeated int64 FieldIds = 7 ;
+    repeated int64 CropZoneIds = 8 ;
     oneof subtype {
        RasterReferenceLayer RasterReferenceLayer = 101;
        ShapeReferenceLayer ShapeReferenceLayer = 102;
@@ -41,8 +41,8 @@ message ReferenceLayer {
 
 message RasterReferenceLayer {
    Shape Origin = 1;
-   int32 RowCount = 2;
-   int32 ColumnCount = 3;
+   int64 RowCount = 2;
+   int64 ColumnCount = 3;
    NumericRepresentationValue CellWidth = 4;
    NumericRepresentationValue CellHeight = 5;
    repeated RasterData RasterData = 6;

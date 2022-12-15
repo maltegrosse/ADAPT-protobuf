@@ -6,21 +6,22 @@ import "Common.proto";
 import "Notes.proto";
 import "Equipment.proto";
 import "Representations.proto";
+import "Shapes.proto";
 
 message LoggedData {
    CompoundIdentifier Id = 1;
    repeated TimeScope TimeScopes = 2;
-   repeated int32 PersonRoleIds = 3 ;
-   repeated int32 GuidanceAllocationIds = 4 ;
-   repeated int32 WorkItemIds = 5 ;
-   int32 SummaryId = 6;
+   repeated int64 PersonRoleIds = 3 ;
+   repeated int64 GuidanceAllocationIds = 4 ;
+   repeated int64 WorkItemIds = 5 ;
+   int64 SummaryId = 6;
    repeated Note Notes = 7;
    repeated OperationData OperationData = 8;
-   int32 WorkRecordId = 15;
-   int32 GrowerId = 16;
-   int32 FarmId = 17;
-   int32 FieldId = 18;
-   int32 CropZoneId = 19;
+   int64 WorkRecordId = 15;
+   int64 GrowerId = 16;
+   int64 FarmId = 17;
+   int64 FieldId = 18;
+   int64 CropZoneId = 19;
    EquipmentConfigurationGroup EquipmentConfigurationGroup = 20;
    string Description = 21;
    repeated CalibrationFactor CalibrationFactors = 22;
@@ -28,10 +29,10 @@ message LoggedData {
 
 message CalibrationFactor {
     CompoundIdentifier Id = 1;
-    int32 MeterId = 2;
-    repeated int32 TimeScopeIds = 3 ;
+    int64 MeterId = 2;
+    repeated int64 TimeScopeIds = 3 ;
     RepresentationValue Value = 4;
-    int32 OperationDataId = 5;
+    int64 OperationDataId = 5;
  }
  message DataLogTrigger {
    CompoundIdentifier Id = 1;
@@ -45,7 +46,7 @@ message CalibrationFactor {
    LoggingLevelEnum LoggingLevel = 9;
    Representation Representation = 10 ; 
    bool RequestDefaultProcessData = 11;
-   int32 DeviceElementId = 12;
+   int64 DeviceElementId = 12;
  }
  enum LoggingLevelEnum{
    MachineType= 0;
@@ -57,7 +58,7 @@ message CalibrationFactor {
    Unspecified = 6;
  }
  message EnumeratedWorkingData {
-    repeated int32 ValueCodes = 1 ;
+    repeated int64 ValueCodes = 1 ;
  }
 
  message Load {
@@ -67,10 +68,10 @@ message CalibrationFactor {
     string LoadNumber = 4;
     LoadTypeEnum LoadType = 5;
     NumericRepresentationValue LoadQuantity = 6;
-    repeated int32 DestinationIds = 7 ;
+    repeated int64 DestinationIds = 7 ;
     repeated ContextItem ContextItems = 8;
-    int32 ObservationsId = 9; // 20190430 Added O&M support
-    int32 ObsCollectionId = 10; // 20190819 Added reference to a specific ObsCollection to hold this load's observations
+    int64 ObservationsId = 9; // 20190430 Added O&M support
+    int64 ObsCollectionId = 10; // 20190819 Added reference to a specific ObsCollection to hold this load's observations
  }
  enum LoadTypeEnum {
     Unknown = 0;
@@ -96,23 +97,23 @@ message NumericWorkingData {
 
 message OperationData {
     CompoundIdentifier Id = 1;
-    int32 LoadId = 2;
+    int64 LoadId = 2;
     OperationTypeEnum OperationType = 3;
-    int32 PrescriptionId = 4;
-    repeated int32 ProductIds = 5 ;
-    int32 VarietyLocatorId = 6;
-    int32 WorkItemOperationId = 7;
-    int32 MaxDepth = 8;
-    int32 SpatialRecordCount = 9;
-    repeated int32 EquipmentConfigurationIds = 10 ;
+    int64 PrescriptionId = 4;
+    repeated int64 ProductIds = 5 ;
+    int64 VarietyLocatorId = 6;
+    int64 WorkItemOperationId = 7;
+    int64 MaxDepth = 8;
+    int64 SpatialRecordCount = 9;
+    repeated int64 EquipmentConfigurationIds = 10 ;
     string Description = 11;
-    repeated int32 CoincidentOperationDataIds = 12;
+    repeated int64 CoincidentOperationDataIds = 12;
     repeated ContextItem ContextItems = 13;
  }
 
  message SectionSummary {
     CompoundIdentifier Id = 1;
-    int32 SectionId = 2;
+    int64 SectionId = 2;
     NumericRepresentationValue TotalDistanceTravelled = 3;
     NumericRepresentationValue TotalElapsedTime = 4;
  }
@@ -127,7 +128,7 @@ message OperationData {
 
  message WorkingData {
    CompoundIdentifier Id = 1;
-   int32 DeviceElementUseId = 2;
+   int64 DeviceElementUseId = 2;
    Representation Representation = 3 ; 
    RepresentationValue AppliedLatency = 4;
    RepresentationValue ReportedLatency = 5;

@@ -38,7 +38,7 @@ message BoundingBox {
  }
 
  message Shape {
-   int32 Id = 1;
+   int64 Id = 1;
    ShapeTypeEnum Type = 2;
    oneof subtype {
       LinearRing LinearRing = 101;

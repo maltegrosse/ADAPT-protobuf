@@ -24,7 +24,7 @@ enum ApplicationStrategyEnum {
  message RadialExtent {
     NumericRepresentationValue StartAngle = 1;
     NumericRepresentationValue EndAngle = 2;
-    int32 SectionId = 3;
+    int64 SectionId = 3;
     NumericRepresentationValue InnerRadius = 4;
     NumericRepresentationValue OuterRadius = 5;
     Point RotCtr = 6;
@@ -42,8 +42,8 @@ message RadialPrescription {
 
 message RasterGridPrescription {
     Shape Origin = 1;
-    int32 RowCount = 2;
-    int32 ColumnCount = 3;
+    int64 RowCount = 2;
+    int64 ColumnCount = 3;
     NumericRepresentationValue CellWidth = 4;
     NumericRepresentationValue CellHeight = 5;
     repeated RxCellLookup Rates = 6;
@@ -54,12 +54,12 @@ message RasterGridPrescription {
  }
  message RxRate {
     double Rate = 1;
-    int32 RxProductLookupId = 2;
+    int64 RxProductLookupId = 2;
  }
  
  message RxProductLookup {
     CompoundIdentifier Id = 1;
-    int32 ProductId = 2;
+    int64 ProductId = 2;
     NumericRepresentation Representation = 3; 
     UnitOfMeasure UnitOfMeasure = 4; 
     NumericRepresentationValue OutOfFieldRate = 5;

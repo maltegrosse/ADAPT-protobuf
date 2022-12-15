@@ -6,14 +6,14 @@ import "Common.proto";
 
 
 message RepresentationValue {
-   int32 Code = 1;
+   int64 Code = 1;
    string Designator = 2;
-   int32 Color = 3;
+   int64 Color = 3;
 }
 
 message EnumeratedRepresentation {
     repeated EnumerationMember EnumeratedMembers = 1;
-    int32 RepresentationGroupId = 2;
+    int64 RepresentationGroupId = 2;
  }
  message EnumeratedRepresentationGroup {
     CompoundIdentifier Id = 1;
@@ -24,11 +24,11 @@ message EnumeratedRepresentation {
     EnumerationMember Value = 2;
  }
  message EnumerationMember {
-    int32 Code = 1;
+    int64 Code = 1;
     string Value = 2;
  }
  message NumericRepresentation {
-    int32 DecimalDigits = 1;
+    int64 DecimalDigits = 1;
     NumericValue MinValue = 2;
     NumericValue MaxValue = 3;
     UnitOfMeasureDimensionEnum Dimension = 4;
@@ -63,9 +63,9 @@ message EnumeratedRepresentation {
  }
 
  message RepresentationValue {
-    int32 Code = 1;
+    int64 Code = 1;
     string Designator = 2;
-    int32 Color = 3;
+    int64 Color = 3;
     oneof subtype {
        EnumeratedValue EnumeratedValue = 101;
        NumericRepresentationValue NumericRepresentationValue = 102;
@@ -73,8 +73,8 @@ message EnumeratedRepresentation {
     }
  }
  message StringRepresentation {
-    int32 MinCharacters = 1;
-    int32 MaxCharacters = 2;
+    int64 MinCharacters = 1;
+    int64 MaxCharacters = 2;
  }
  message StringValue {
     Representation Representation = 1 ;

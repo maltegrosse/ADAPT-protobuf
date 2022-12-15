@@ -9,8 +9,8 @@ message ActiveIngredient{}
 
 message AvailableProduct {
     CompoundIdentifier Id = 1;
-    int32 ProductId = 2;
-    int32 GrowerId = 3;
+    int64 ProductId = 2;
+    int64 GrowerId = 3;
     repeated ContextItem ContextItems = 4;
     repeated TimeScope TimeScopes = 5;
  }
@@ -34,15 +34,15 @@ message AvailableProduct {
 }
 
 message ContainedPackagedProduct{
-    int32 PackagedProductId = 1;
-    int32 Count = 2;
+    int64 PackagedProductId = 1;
+    int64 Count = 2;
 }
 message Container{
     CompoundIdentifier Id = 1;
     string Description = 2;
-    int32 ContainerModelId = 3;
+    int64 ContainerModelId = 3;
     ContainerUseTypeEnum ContainerUseType = 4;
-    int32 CorrespondingDeviceElementId = 5;
+    int64 CorrespondingDeviceElementId = 5;
     repeated ContextItem ContextItems = 6;
 }
 
@@ -75,7 +75,7 @@ enum ContainerUseTypeEnum{
 message Crop {
     CompoundIdentifier Id = 1;
     string Name = 2;
-    int32 ParentId = 3;
+    int64 ParentId = 3;
     NumericRepresentationValue ReferenceWeight = 4;
     NumericRepresentationValue StandardPayableMoisture = 5;
     repeated ContextItem ContextItems = 6;
@@ -92,18 +92,18 @@ message Crop {
     bool Carbamate = 3;
  }
  message CropVarietyProduct {
-    int32 CropId = 1;
-    repeated int32 TraitIds = 2 ;
+    int64 CropId = 1;
+    repeated int64 TraitIds = 2 ;
     bool GeneticallyEnhanced = 3;
  }
 
  message DensityFactor {
     CompoundIdentifier Id = 1;
-    int32 ProductId = 2;
+    int64 ProductId = 2;
     string BatchNo = 3;
     string LotNo = 4;
     NumericRepresentationValue Density = 5;
-    repeated int32 TimeScopeIds = 6 [packed = false];
+    repeated int64 TimeScopeIds = 6 [packed = false];
  }
 
  message InertIngredient {}
@@ -120,8 +120,8 @@ message Crop {
 
  message IngredientUse {
     CompoundIdentifier Id = 1;
-    int32 ProductId = 2;
-    int32 IngredientId = 3;
+    int64 ProductId = 2;
+    int64 IngredientId = 3;
     double Fraction = 4;
     bool IsProduct = 5;
  }
@@ -135,8 +135,8 @@ message Crop {
 {
     CompoundIdentifier Id = 1;
     string Description = 2;
-    int32 ProductId = 3;
-    int32 ContainerModelId = 4;
+    int64 ProductId = 3;
+    int64 ContainerModelId = 4;
     bool IsBulk = 5;
     PackagedProductStatusEnum Status = 5;
     NumericRepresentationValue ProductQuantity = 6;
@@ -149,13 +149,13 @@ message Crop {
 message  PackagedProductInstance{
     CompoundIdentifier Id = 1;
     string Description = 2;
-    int32 PackagedProductId = 3;
+    int64 PackagedProductId = 3;
     NumericRepresentationValue ProductQuantity = 4;
-    repeated int32 ContainedPackagedProductInstanceIds = 5;
+    repeated int64 ContainedPackagedProductInstanceIds = 5;
     NumericRepresentationValue Height = 6;
     NumericRepresentationValue GrossWeight = 7;
     NumericRepresentationValue NetWeight = 8;
-    int32 ContainerId = 9;
+    int64 ContainerId = 9;
     repeated ContextItem ContextItems = 10;
 }
 enum ProductStatusEnum {
@@ -176,7 +176,7 @@ message Product {
     CompoundIdentifier Id = 1;
     repeated ContextItem ContextItems = 2;
     repeated ProductComponent ProductComponents = 3;
-    int32 BrandId = 15;
+    int64 BrandId = 15;
     CategoryEnum Category = 16;
     RepresentationValue Density = 17;
     string Description = 18;
@@ -185,7 +185,7 @@ message Product {
     bool HasCropNutrition = 21;
     bool HasCropVariety = 22;
     bool HasHarvestCommodity = 23;
-    int32 ManufacturerId = 24;
+    int64 ManufacturerId = 24;
     ProductTypeEnum ProductType = 25;
     ProductStatusEnum Status = 26;
     oneof subtype {
@@ -201,10 +201,10 @@ message Product {
 message GenericProduct {
 }
 message HarvestedCommodityProduct {
-    int32 CropId = 1;
+    int64 CropId = 1;
  }
 message ProductComponent {
-    int32 IngredientId = 1;
+    int64 IngredientId = 1;
     NumericRepresentationValue Quantity = 2;
     bool IsProduct = 3;
     bool IsCarrier = 4;
@@ -226,7 +226,7 @@ enum ProductTypeEnum{
 }
 
 message ProductUse {
-    int32 ProductId = 1;
+    int64 ProductId = 1;
     NumericRepresentationValue Rate =2;
     NumericRepresentationValue AppliedArea =3;
     NumericRepresentationValue ProductTotal =4;
@@ -236,6 +236,6 @@ message Trait {
     CompoundIdentifier Id = 1;
     string TraitCode = 2;
     string Description = 3;
-    int32 ManufacturerId = 4;
-    repeated int32 CropIds = 5;
+    int64 ManufacturerId = 4;
+    repeated int64 CropIds = 5;
 }

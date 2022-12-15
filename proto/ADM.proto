@@ -26,7 +26,7 @@ message ApplicationDataModel {
 
 
  message ProprietaryValue {
-   int32 Key = 1;
+   int64 Key = 1;
    string Value = 2;
  }
 
@@ -83,7 +83,7 @@ message ApplicationDataModel {
    repeated IrrRecord IrrRecords = 5;
    repeated Load Loads = 6;
    repeated LoggedData LoggedData = 7;
-   int32 LoggedDataCatalog  = 8;
+   int64 LoggedDataCatalog  = 8;
    repeated Obs Obs = 9; 
    repeated ObsCollection ObsCollections  = 10;
    repeated ObsDataset ObsDatasets = 11;
@@ -100,10 +100,10 @@ message ApplicationDataModel {
    CompoundIdentifier Id = 1;
    string Description = 2;
    OperationTypeEnum OperationType = 3;
-   int32 FieldId = 4;
-   int32 CropZoneId = 5;
+   int64 FieldId = 4;
+   int64 CropZoneId = 5;
    repeated RxProductLookup RxProductLookups = 6;
-   repeated int32 ProductIds = 7 [packed = false];
+   repeated int64 ProductIds = 7 [packed = false];
    repeated ContextItem ContextItems = 8;
    repeated TimeScope TimeScopes = 9;
    repeated PersonRole PersonRoles = 10;
