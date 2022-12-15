@@ -1,35 +1,37 @@
 syntax = "proto3";
 
-package AgGateway.ADAPT.ApplicationDataModel.ReferenceLayers;
+package ADAPT.ReferenceLayers;
 
 import "Common.proto";
 import "Representations.proto";
 import "Shapes.proto";
 
+option go_package = "github.com/maltegrosse/adapt-go/ReferenceLayers";
+
 message RasterData {
-   Representation Representation = 1 ; 
+   ADAPT.Representations.Representation Representation = 1 ; 
    oneof subtype {
-   RasterDataEnumeratedRepresentation RasterDataEnumeratedRepresentation = 101;
-   RasterDataNumericRepresentation RasterDataNumericRepresentation = 102;
-   RasterDataStringRepresentation RasterDataStringRepresentation = 103;
+      RasterDataEnumeratedRepresentation RasterDataEnumeratedRepresentation = 101;
+      RasterDataNumericRepresentation RasterDataNumericRepresentation = 102;
+      RasterDataStringRepresentation RasterDataStringRepresentation = 103;
    }
 }
 message RasterDataEnumeratedRepresentation{
-   repeated EnumeratedValue Values = 1;
+   repeated ADAPT.Representations.EnumeratedValue Values = 1;
 }
 message RasterDataNumericRepresentation{
-   repeated NumericRepresentationValue Values = 1;
+   repeated ADAPT.Representations.NumericRepresentationValue Values = 1;
 }
 message RasterDataStringRepresentation{
-   repeated StringValue Values = 1;
+   repeated ADAPT.Representations.StringValue Values = 1;
 }
 message ReferenceLayer {
-    CompoundIdentifier Id = 1;
+   ADAPT.Common.CompoundIdentifier Id = 1;
     string Description = 2;
-    ReferenceLayerTypeEnum LayerType = 3;
-    repeated TimeScope TimeScopes = 4;
-    Polygon BoundingPolygon = 5;
-    repeated ContextItem ContextItems = 6;
+    ReferenceLayerType LayerType = 3;
+    repeated ADAPT.Common.TimeScope TimeScopes = 4;
+    ADAPT.Shapes.Polygon BoundingPolygon = 5;
+    repeated ADAPT.Common.ContextItem ContextItems = 6;
     repeated int64 FieldIds = 7 ;
     repeated int64 CropZoneIds = 8 ;
     oneof subtype {
@@ -40,30 +42,32 @@ message ReferenceLayer {
 
 
 message RasterReferenceLayer {
-   Shape Origin = 1;
+   ADAPT.Shapes.Shape Origin = 1;
    int64 RowCount = 2;
    int64 ColumnCount = 3;
-   NumericRepresentationValue CellWidth = 4;
-   NumericRepresentationValue CellHeight = 5;
+   ADAPT.Representations.NumericRepresentationValue CellWidth = 4;
+   ADAPT.Representations.NumericRepresentationValue CellHeight = 5;
    repeated RasterData RasterData = 6;
 }
-
- enum ReferenceLayerTypeEnum {
-    BackgroundImage = 0;
-    CommonLandUnit = 1;
-    ElevationMap = 2;
-    ManagementZone = 3;
-    Obstacles = 4;
-    ProfitMap = 5;
-    SoilTypeMap = 6;
-    VarietyLocator = 7;
- }
+message ReferenceLayerType {
+   enum ReferenceLayerTypeEnum {
+      BackgroundImage = 0;
+      CommonLandUnit = 1;
+      ElevationMap = 2;
+      ManagementZone = 3;
+      Obstacles = 4;
+      ProfitMap = 5;
+      SoilTypeMap = 6;
+      VarietyLocator = 7;
+   }
+}
+ 
  message ShapeLookup {
-    Shape Shape = 1;
+    ADAPT.Shapes.Shape Shape = 1;
     SpatialAttribute SpatialAttribute = 2;
  }
  message SpatialAttribute {
-   repeated RepresentationValue Values = 1;
+   repeated ADAPT.Representations.RepresentationValue Values = 1;
 }
  message ShapeReferenceLayer {
     repeated ShapeLookup ShapeLookups = 1;

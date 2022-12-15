@@ -1,87 +1,96 @@
 syntax = "proto3";
 
-package AgGateway.ADAPT.ApplicationDataModel.Products;
+package ADAPT.Products;
 
 import "Common.proto";
 import "Representations.proto";
 
+option go_package = "github.com/maltegrosse/adapt-go/Products";
+
 message ActiveIngredient{}
 
 message AvailableProduct {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier  Id = 1;
     int64 ProductId = 2;
     int64 GrowerId = 3;
-    repeated ContextItem ContextItems = 4;
-    repeated TimeScope TimeScopes = 5;
+    repeated ADAPT.Common.ContextItem  ContextItems = 4;
+    repeated ADAPT.Common.TimeScope TimeScopes = 5;
  }
-
- enum CategoryEnum
-{
-    Additive = 0;
-    Carrier =1;
-    Fungicide = 2;
-    GrowthRegulator = 3;
-    Insecticide = 4;
-    Herbicide = 5;
-    Manure = 6;
-    NitrogenStabilizer = 7;
-    Unknown = 8;
-    Variety = 9;
-    Fertilizer = 10; //non-manure
-    Pesticide = 11; //non-Insecticide
-    Adjuvant= 12;
-    Defoliant = 13;
+message Category{
+    enum CategoryEnum
+    {
+        Additive = 0;
+        Carrier =1;
+        Fungicide = 2;
+        GrowthRegulator = 3;
+        Insecticide = 4;
+        Herbicide = 5;
+        Manure = 6;
+        NitrogenStabilizer = 7;
+        Unknown = 8;
+        Variety = 9;
+        Fertilizer = 10; //non-manure
+        Pesticide = 11; //non-Insecticide
+        Adjuvant= 12;
+        Defoliant = 13;
+    }
 }
+
 
 message ContainedPackagedProduct{
     int64 PackagedProductId = 1;
     int64 Count = 2;
 }
 message Container{
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier  Id = 1;
     string Description = 2;
     int64 ContainerModelId = 3;
-    ContainerUseTypeEnum ContainerUseType = 4;
+    ContainerUseType ContainerUseType = 4;
     int64 CorrespondingDeviceElementId = 5;
-    repeated ContextItem ContextItems = 6;
+    repeated ADAPT.Common.ContextItem  ContextItems = 6;
 }
 
 
 message ContainerModel { 
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier  Id = 1;
     string Description = 2;
-    ContainerModelStatusEnum Status = 3;
-    NumericRepresentationValue Capacity = 4;
-    ContainerUseTypeEnum DefaultUseType = 5;
-    NumericRepresentationValue Length = 6;
-    NumericRepresentationValue Width = 7;
-    NumericRepresentationValue Height = 8;
-    repeated ContextItem ContextItems = 9;
+    ContainerModelStatus Status = 3;
+    ADAPT.Representations.NumericRepresentationValue Capacity = 4;
+    ContainerUseType DefaultUseType = 5;
+    ADAPT.Representations.NumericRepresentationValue Length = 6;
+    ADAPT.Representations.NumericRepresentationValue Width = 7;
+    ADAPT.Representations.NumericRepresentationValue Height = 8;
+    repeated ADAPT.Common.ContextItem  ContextItems = 9;
 }
-enum ContainerModelStatusEnum{
-    Active = 0;
-    Inactive = 1;
-    Retired = 2;
-    NoLongerSold = 3;
+message ContainerModelStatus{
+    enum ContainerModelStatusEnum{
+        Active = 0;
+        Inactive = 1;
+        Retired = 2;
+        NoLongerSold = 3;
+    }
 }
 
-enum ContainerUseTypeEnum{
-    Disposable= 0;
-    Reusable = 1;
-    Fixed = 2;
-    Mobile = 3;
+message ContainerUseType{
+    enum ContainerUseTypeEnum{
+        Disposable= 0;
+        Reusable = 1;
+        Fixed = 2;
+        Mobile = 3;
+    }
 }
+
 
 message Crop {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier  Id = 1;
     string Name = 2;
     int64 ParentId = 3;
-    NumericRepresentationValue ReferenceWeight = 4;
-    NumericRepresentationValue StandardPayableMoisture = 5;
-    repeated ContextItem ContextItems = 6;
+    ADAPT.Representations.NumericRepresentationValue ReferenceWeight = 4;
+    ADAPT.Representations.NumericRepresentationValue StandardPayableMoisture = 5;
+    repeated ADAPT.Common.ContextItem  ContextItems = 6;
  }
  message CropNutritionIngredient {
-    EnumeratedValue IngredientCode = 1;
+    ADAPT.Representations.EnumeratedValue IngredientCode = 1;
  }
  message CropNutritionProduct {
     bool IsManure = 1;
@@ -98,20 +107,20 @@ message Crop {
  }
 
  message DensityFactor {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier  Id = 1;
     int64 ProductId = 2;
     string BatchNo = 3;
     string LotNo = 4;
-    NumericRepresentationValue Density = 5;
+    ADAPT.Representations.NumericRepresentationValue Density = 5;
     repeated int64 TimeScopeIds = 6 [packed = false];
  }
 
  message InertIngredient {}
 
  message Ingredient {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier  Id = 1;
     string Description = 2;
-    repeated ContextItem ContextItems = 3;
+    repeated ADAPT.Common.ContextItem  ContextItems = 3;
     oneof subtype {
        ActiveIngredient ActiveIngredient = 101;
        CropNutritionIngredient CropNutritionIngredient = 102;
@@ -119,7 +128,7 @@ message Crop {
  }
 
  message IngredientUse {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier  Id = 1;
     int64 ProductId = 2;
     int64 IngredientId = 3;
     double Fraction = 4;
@@ -127,58 +136,62 @@ message Crop {
  }
 
  message MixProduct {
-    NumericRepresentationValue TotalQuantity = 1;
+    ADAPT.Representations.NumericRepresentationValue TotalQuantity = 1;
     bool IsTemporary = 2;
     bool IsHotMix = 3;
  }
- message  PackagedProduct
-{
-    CompoundIdentifier Id = 1;
+ message  PackagedProduct{
+    ADAPT.Common.CompoundIdentifier  Id = 1;
     string Description = 2;
     int64 ProductId = 3;
     int64 ContainerModelId = 4;
     bool IsBulk = 5;
-    PackagedProductStatusEnum Status = 5;
-    NumericRepresentationValue ProductQuantity = 6;
-    repeated ContainedPackagedProduct ContainedPackagedProducts = 7;
-    NumericRepresentationValue GrossWeight = 8;
-    NumericRepresentationValue NetWeight = 9;
-    repeated ContextItem ContextItems= 10;
+    PackagedProductStatus Status = 6;
+    ADAPT.Representations.NumericRepresentationValue ProductQuantity = 7;
+    repeated ContainedPackagedProduct ContainedPackagedProducts = 8;
+    ADAPT.Representations.NumericRepresentationValue GrossWeight = 9;
+    ADAPT.Representations.NumericRepresentationValue NetWeight = 10;
+    repeated ADAPT.Common.ContextItem  ContextItems= 11;
 }
 
 message  PackagedProductInstance{
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier  Id = 1;
     string Description = 2;
     int64 PackagedProductId = 3;
-    NumericRepresentationValue ProductQuantity = 4;
+    ADAPT.Representations.NumericRepresentationValue ProductQuantity = 4;
     repeated int64 ContainedPackagedProductInstanceIds = 5;
-    NumericRepresentationValue Height = 6;
-    NumericRepresentationValue GrossWeight = 7;
-    NumericRepresentationValue NetWeight = 8;
+    ADAPT.Representations.NumericRepresentationValue Height = 6;
+    ADAPT.Representations.NumericRepresentationValue GrossWeight = 7;
+    ADAPT.Representations.NumericRepresentationValue NetWeight = 8;
     int64 ContainerId = 9;
-    repeated ContextItem ContextItems = 10;
+    repeated ADAPT.Common.ContextItem  ContextItems = 10;
 }
-enum ProductStatusEnum {
-    Active = 0;
-    Inactive = 1;
-    Retired = 2;
-    NoLongerSold = 3;
- }
+message ProductStatus{
+    enum ProductStatusEnum {
+        Active = 0;
+        Inactive = 1;
+        Retired = 2;
+        NoLongerSold = 3;
+     }
+}
 
-enum PackagedProductStatusEnum{
-    Active = 0;
-    Inactive = 1;
-    Retired = 2;
-    NoLongerSold = 3;
+message PackagedProductStatus {
+    enum PackagedProductStatusEnum{
+        Active = 0;
+        Inactive = 1;
+        Retired = 2;
+        NoLongerSold = 3;
+    }
 }
+
 
 message Product {
-    CompoundIdentifier Id = 1;
-    repeated ContextItem ContextItems = 2;
+    ADAPT.Common.CompoundIdentifier  Id = 1;
+    repeated ADAPT.Common.ContextItem  ContextItems = 2;
     repeated ProductComponent ProductComponents = 3;
     int64 BrandId = 15;
-    CategoryEnum Category = 16;
-    RepresentationValue Density = 17;
+    Category Category = 16;
+    ADAPT.Representations.NumericRepresentationValue Density = 17;
     string Description = 18;
     ProductFormEnum Form = 19;
     bool HasCropProtection = 20;
@@ -186,8 +199,8 @@ message Product {
     bool HasCropVariety = 22;
     bool HasHarvestCommodity = 23;
     int64 ManufacturerId = 24;
-    ProductTypeEnum ProductType = 25;
-    ProductStatusEnum Status = 26;
+    ProductType ProductType = 25;
+    ProductStatus Status = 26;
     oneof subtype {
         GenericProduct GenericProduct = 101;
         HarvestedCommodityProduct HarvestedCommodityProduct = 102;
@@ -205,7 +218,7 @@ message HarvestedCommodityProduct {
  }
 message ProductComponent {
     int64 IngredientId = 1;
-    NumericRepresentationValue Quantity = 2;
+    ADAPT.Representations.NumericRepresentationValue Quantity = 2;
     bool IsProduct = 3;
     bool IsCarrier = 4;
     }
@@ -216,24 +229,26 @@ message ProductComponent {
     Solid = 2;
     Unknown = 3;
 }
-
-enum ProductTypeEnum{
-    Chemical= 0;
-    Fertilizer = 1;
-    Generic = 2;
-    Mix= 3;
-    Variety= 4;
+message ProductType{
+    enum ProductTypeEnum{
+        Chemical= 0;
+        Fertilizer = 1;
+        Generic = 2;
+        Mix= 3;
+        Variety= 4;
+    }
 }
+
 
 message ProductUse {
     int64 ProductId = 1;
-    NumericRepresentationValue Rate =2;
-    NumericRepresentationValue AppliedArea =3;
-    NumericRepresentationValue ProductTotal =4;
+    ADAPT.Representations.NumericRepresentationValue Rate =2;
+    ADAPT.Representations.NumericRepresentationValue AppliedArea =3;
+    ADAPT.Representations.NumericRepresentationValue ProductTotal =4;
 }
 
 message Trait {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier  Id = 1;
     string TraitCode = 2;
     string Description = 3;
     int64 ManufacturerId = 4;

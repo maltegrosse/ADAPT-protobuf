@@ -1,50 +1,53 @@
 syntax = "proto3";
 
-package AgGateway.ADAPT.ApplicationDataModel.LoggedData;
+package ADAPT.LoggedData;
 
 import "Common.proto";
 import "Notes.proto";
 import "Equipment.proto";
 import "Representations.proto";
 import "Shapes.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/maltegrosse/adapt-go/LoggedData";
 
 message LoggedData {
-   CompoundIdentifier Id = 1;
-   repeated TimeScope TimeScopes = 2;
+   ADAPT.Common.CompoundIdentifier Id = 1;
+   repeated ADAPT.Common.TimeScope TimeScopes = 2;
    repeated int64 PersonRoleIds = 3 ;
    repeated int64 GuidanceAllocationIds = 4 ;
    repeated int64 WorkItemIds = 5 ;
    int64 SummaryId = 6;
-   repeated Note Notes = 7;
+   repeated ADAPT.Notes.Note Notes = 7;
    repeated OperationData OperationData = 8;
    int64 WorkRecordId = 15;
    int64 GrowerId = 16;
    int64 FarmId = 17;
    int64 FieldId = 18;
    int64 CropZoneId = 19;
-   EquipmentConfigurationGroup EquipmentConfigurationGroup = 20;
+   ADAPT.Equipment.EquipmentConfigurationGroup EquipmentConfigurationGroup = 20;
    string Description = 21;
    repeated CalibrationFactor CalibrationFactors = 22;
 }
 
 message CalibrationFactor {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier Id = 1;
     int64 MeterId = 2;
     repeated int64 TimeScopeIds = 3 ;
-    RepresentationValue Value = 4;
+    ADAPT.Representations.NumericRepresentationValue Value = 4;
     int64 OperationDataId = 5;
  }
  message DataLogTrigger {
-   CompoundIdentifier Id = 1;
+   ADAPT.Common.CompoundIdentifier Id = 1;
    repeated LoggingMethodEnum DataLogMethods = 2;
-   NumericRepresentationValue DataLogDistanceInterval = 3;
-   NumericRepresentationValue DataLogTimeInterval = 4;
-   NumericRepresentationValue DataLogThresholdMinimum = 5;
-   NumericRepresentationValue DataLogThresholdMaximum = 6;
-   NumericRepresentationValue DataLogThresholdChange = 7;
-   repeated ContextItem ContextItems = 8;
+   ADAPT.Representations.NumericRepresentationValue DataLogDistanceInterval = 3;
+   ADAPT.Representations.NumericRepresentationValue DataLogTimeInterval = 4;
+   ADAPT.Representations.NumericRepresentationValue DataLogThresholdMinimum = 5;
+   ADAPT.Representations.NumericRepresentationValue DataLogThresholdMaximum = 6;
+   ADAPT.Representations.NumericRepresentationValue DataLogThresholdChange = 7;
+   repeated ADAPT.Common.ContextItem ContextItems = 8;
    LoggingLevelEnum LoggingLevel = 9;
-   Representation Representation = 10 ; 
+   ADAPT.Representations.Representation Representation = 10 ; 
    bool RequestDefaultProcessData = 11;
    int64 DeviceElementId = 12;
  }
@@ -62,14 +65,14 @@ message CalibrationFactor {
  }
 
  message Load {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier Id = 1;
     string Description = 2;
-    repeated TimeScope TimeScopes = 3;
+    repeated ADAPT.Common.TimeScope TimeScopes = 3;
     string LoadNumber = 4;
     LoadTypeEnum LoadType = 5;
-    NumericRepresentationValue LoadQuantity = 6;
+    ADAPT.Representations.NumericRepresentationValue LoadQuantity = 6;
     repeated int64 DestinationIds = 7 ;
-    repeated ContextItem ContextItems = 8;
+    repeated ADAPT.Common.ContextItem ContextItems = 8;
     int64 ObservationsId = 9; // 20190430 Added O&M support
     int64 ObsCollectionId = 10; // 20190819 Added reference to a specific ObsCollection to hold this load's observations
  }
@@ -91,14 +94,14 @@ message CalibrationFactor {
 }
 
 message NumericWorkingData {
-    UnitOfMeasure UnitOfMeasure = 1 ; 
+    ADAPT.Common.UnitOfMeasure UnitOfMeasure = 1 ; 
     repeated double Values = 2 ;
 }
 
 message OperationData {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier Id = 1;
     int64 LoadId = 2;
-    OperationTypeEnum OperationType = 3;
+    ADAPT.Common.OperationType OperationType = 3;
     int64 PrescriptionId = 4;
     repeated int64 ProductIds = 5 ;
     int64 VarietyLocatorId = 6;
@@ -108,30 +111,30 @@ message OperationData {
     repeated int64 EquipmentConfigurationIds = 10 ;
     string Description = 11;
     repeated int64 CoincidentOperationDataIds = 12;
-    repeated ContextItem ContextItems = 13;
+    repeated ADAPT.Common.ContextItem ContextItems = 13;
  }
 
  message SectionSummary {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier Id = 1;
     int64 SectionId = 2;
-    NumericRepresentationValue TotalDistanceTravelled = 3;
-    NumericRepresentationValue TotalElapsedTime = 4;
+    ADAPT.Representations.NumericRepresentationValue TotalDistanceTravelled = 3;
+    ADAPT.Representations.NumericRepresentationValue TotalElapsedTime = 4;
  }
 
  message SpatialRecord {
-    Shape Geometry = 1;
-    Timestamp Timestamp = 2;
-    map<int32, RepresentationValue>  MeterValues = 3;
+    ADAPT.Shapes.Shape Geometry = 1;
+    google.protobuf.Timestamp Timestamp = 2;
+    map<int32, ADAPT.Representations.RepresentationValue>  MeterValues = 3;
     map<int32, int32>  AppliedLatencyValues = 4;
-    RepresentationValue SignalType = 5;
+    ADAPT.Representations.RepresentationValue SignalType = 5;
  }
 
  message WorkingData {
-   CompoundIdentifier Id = 1;
+   ADAPT.Common.CompoundIdentifier Id = 1;
    int64 DeviceElementUseId = 2;
-   Representation Representation = 3 ; 
-   RepresentationValue AppliedLatency = 4;
-   RepresentationValue ReportedLatency = 5;
+   ADAPT.Representations.Representation Representation = 3 ; 
+   ADAPT.Representations.RepresentationValue AppliedLatency = 4;
+   ADAPT.Representations.RepresentationValue ReportedLatency = 5;
    oneof subtype {
       EnumeratedWorkingData EnumeratedWorkingData = 101;
       NumericWorkingData NumericWorkingData = 102;

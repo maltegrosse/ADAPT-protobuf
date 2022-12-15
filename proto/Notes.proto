@@ -1,14 +1,16 @@
 syntax = "proto3";
 
-package AgGateway.ADAPT.ApplicationDataModel.Notes;
+package ADAPT.Notes;
 
 import "Common.proto";
 import "Shapes.proto";
 import "Representations.proto";
 
+option go_package = "github.com/maltegrosse/adapt-go/Notes";
+
 message Note {
     string Description = 1;
-    EnumeratedValue Value = 2;
-    repeated TimeScope TimeStamps = 3;
-    Shape SpatialContext = 4;
+    ADAPT.Representations.EnumeratedValue Value = 2;
+    repeated ADAPT.Common.TimeScope TimeStamps = 3;
+    ADAPT.Shapes.Shape SpatialContext = 4;
  }

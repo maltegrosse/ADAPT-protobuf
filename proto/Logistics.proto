@@ -1,38 +1,44 @@
 syntax = "proto3";
 
-package AgGateway.ADAPT.ApplicationDataModel.Logistics;
+package ADAPT.Logistics;
 
 import "Common.proto";
 import "Representations.proto";
+import "Notes.proto";
 import "Shapes.proto";
 import "google/protobuf/timestamp.proto";
 
+option go_package = "github.com/maltegrosse/adapt-go/Logistics";
+
 message Brand {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier   Id = 1;
     string Description = 2;
     int64 ManufacturerId = 3;
-    repeated ContextItem ContextItems = 4;
+    repeated ADAPT.Common.ContextItem   ContextItems = 4;
  }
 
  message Company {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier   Id = 1;
     string Name = 2;
     int64 ContactInfoId = 3;
-    repeated ContextItem ContextItems = 4;
+    repeated ADAPT.Common.ContextItem   ContextItems = 4;
  }
 
  message Contact {
     string Number = 1;
-    ContactTypeEnum Type = 2;
+    ContactType Type = 2;
  }
- enum ContactTypeEnum {
-    FixedPhone = 0;
-    MobilePhone = 1;
-    Fax = 2;
-    Email = 3;
+ message ContactType{
+   enum ContactTypeEnum {
+      FixedPhone = 0;
+      MobilePhone = 1;
+      Fax = 2;
+      Email = 3;
+   }
  }
+
  message ContactInfo {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier   Id = 1;
     string AddressLine1 = 2;
     string AddressLine2 = 3;
     string PoBoxNumber = 4;
@@ -42,162 +48,160 @@ message Brand {
     string Country = 8;
     string CountryCode = 9;
     repeated Contact Contacts = 10;
-    Location Location = 11;
-    repeated ContextItem ContextItems = 12;
+    ADAPT.Common.Location    Location = 11;
+    repeated ADAPT.Common.ContextItem   ContextItems = 12;
  }
  message CropZone {
-    CompoundIdentifier Id = 1;
-    repeated TimeScope TimeScopes = 2;
+    ADAPT.Common.CompoundIdentifier   Id = 1;
+    repeated ADAPT.Common.TimeScope TimeScopes = 2;
     string Description = 3;
     int64 FieldId = 4;
     int64 CropId = 5;
-    NumericRepresentationValue Area = 6;
-    MultiPolygon BoundingRegion = 7;
+    ADAPT.Representations.NumericRepresentationValue Area = 6;
+    ADAPT.Shapes.MultiPolygon BoundingRegion = 7;
     GpsSource BoundarySource = 8;
-    repeated Note Notes = 9;
+    repeated ADAPT.Notes.Note Notes = 9;
     repeated int64 GuidanceGroupIds = 10 ;
-    repeated ContextItem ContextItems = 11;
+    repeated ADAPT.Common.ContextItem   ContextItems = 11;
  }
  message Destination {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier   Id = 1;
     string Description = 2;
-    Location Location = 3;
+    ADAPT.Common.Location    Location = 3;
     int64 FacilityId = 4;
  }
  message Facility {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier   Id = 1;
     int64 CompanyId = 2;
     string Description = 3;
     ContactInfo ContactInfo = 4;
-    RepresentationValue FacilityType = 5;
-    repeated ContextItem ContextItems = 6;
+    ADAPT.Representations.EnumeratedValue FacilityType = 5;
+    repeated ADAPT.Common.ContextItem   ContextItems = 6;
     int64 ParentFacilityId = 7;
  }
 
  message Farm {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier   Id = 1;
     string Description = 2;
     int64 GrowerId = 3;
     ContactInfo ContactInfo = 4;
-    repeated TimeScope TimeScopes = 5;
-    repeated ContextItem ContextItems = 6;
+    repeated ADAPT.Common.TimeScope TimeScopes = 5;
+    repeated ADAPT.Common.ContextItem   ContextItems = 6;
  }
 
  message Field {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier   Id = 1;
     string Description = 2;
     int64 FarmId = 3;
-    NumericRepresentationValue Area = 4;
+    ADAPT.Representations.NumericRepresentationValue Area = 4;
     int64 ActiveBoundaryId = 5;
-    repeated ContextItem ContextItems = 6;
-    NumericRepresentationValue Slope = 7;
-    NumericRepresentationValue Aspect = 8;
-    NumericRepresentationValue SlopeLength = 9;
+    repeated ADAPT.Common.ContextItem   ContextItems = 6;
+    ADAPT.Representations.NumericRepresentationValue Slope = 7;
+    ADAPT.Representations.NumericRepresentationValue Aspect = 8;
+    ADAPT.Representations.NumericRepresentationValue SlopeLength = 9;
     repeated int64 GuidanceGroupIds = 10 [packed = false];
-    repeated TimeScope TimeScopes = 11;
+    repeated ADAPT.Common.TimeScope TimeScopes = 11;
     int64 GrowerId = 12;
 
  }
- enum GLNEnum
-    {
-
-    }
+ 
 message GpsSource {
-    GpsSourceEnum SourceType = 1;
-    NumericRepresentationValue EstimatedPrecision = 2;
-    NumericRepresentationValue HorizontalAccuracy = 3;
-    NumericRepresentationValue VerticalAccuracy = 4;
+   GpsSourceType SourceType = 1;
+    ADAPT.Representations.NumericRepresentationValue EstimatedPrecision = 2;
+    ADAPT.Representations.NumericRepresentationValue HorizontalAccuracy = 3;
+    ADAPT.Representations.NumericRepresentationValue VerticalAccuracy = 4;
     int64 NumberOfSatellites = 5;
-    Timestamp GpsUtcTime = 6;
+    google.protobuf.Timestamp GpsUtcTime = 6;
     }
-enum GpsSourceEnum {
-    Unknown = 0;
-    Drawn = 1;
-    MobileGPS = 2;
-    DeereRTK = 3;
-    DeereRTKX = 4;
-    DeereSF1 = 5;
-    DeereSF2 = 6;
-    DeereWAAS = 7;
-    GNSSfix = 8;
-    DGNSSfix = 9;
-    PreciseGNSS = 10;
-    RTKFixedInteger = 11;
-    RTKFloat = 12;
-    EstDRmode = 13;
-    ManualInput = 14;
-    SimulateMode = 15;
-    DesktopGeneratedData = 16;
-    Other = 17;
-    PPP = 18;
-    SBAS = 19;
-    Mechanical = 20;
+message GpsSourceType{
+   enum GpsSourceTypeEnum {
+      Unknown = 0;
+      Drawn = 1;
+      MobileGPS = 2;
+      DeereRTK = 3;
+      DeereRTKX = 4;
+      DeereSF1 = 5;
+      DeereSF2 = 6;
+      DeereWAAS = 7;
+      GNSSfix = 8;
+      DGNSSfix = 9;
+      PreciseGNSS = 10;
+      RTKFixedInteger = 11;
+      RTKFloat = 12;
+      EstDRmode = 13;
+      ManualInput = 14;
+      SimulateMode = 15;
+      DesktopGeneratedData = 16;
+      Other = 17;
+      PPP = 18;
+      SBAS = 19;
+      Mechanical = 20;
+  }
 }
+
 message Grower {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier   Id = 1;
     string Name = 2;
     ContactInfo ContactInfo = 3;
-    repeated ContextItem ContextItems = 4;
+    repeated ADAPT.Common.ContextItem   ContextItems = 4;
  }
 
- message Location {
-    Point Position = 1;
-    repeated ContextItem ContextItems = 2;
-    GpsSource GpsSource = 3;
-    int64 ParentFacilityId = 4;
- }
+
  message Manufacturer {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier   Id = 1;
     string Description = 2;
-    repeated ContextItem ContextItems = 3;
+    repeated ADAPT.Common.ContextItem   ContextItems = 3;
  }
  message PermittedProduct {
-    CompoundIdentifier Id = 1;
-    repeated TimeScope TimeScopes = 2;
+    ADAPT.Common.CompoundIdentifier   Id = 1;
+    repeated ADAPT.Common.TimeScope TimeScopes = 2;
     int64 GrowerId = 3;
     int64 ProductId = 4;
-    repeated ContextItem ContextItems = 5;
+    repeated ADAPT.Common.ContextItem   ContextItems = 5;
  }
 
  message Person {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier   Id = 1;
     string FirstName = 2;
     string MiddleName = 3;
     string LastName = 4;
     string CombinedName = 5;
     int64 ContactInfoId = 6;
-    repeated ContextItem ContextItems = 7;
+    repeated ADAPT.Common.ContextItem   ContextItems = 7;
  }
 
  message PersonRole {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier   Id = 1;
     int64 PersonId = 2;
-    RepresentationValue Role = 3;
+    ADAPT.Representations.EnumeratedValue Role = 3;
     int64 GrowerId = 4;
-    repeated TimeScope TimeScopes = 5;
+    repeated ADAPT.Common.TimeScope TimeScopes = 5;
     int64 CompanyId = 6;
  }
 
  message Place{
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier   Id = 1;
     string Description = 2;
-    PlaceTypeEnum PlaceType = 3;
+    PlaceType PlaceType = 3;
     int64 DeviceElementId = 4; // Allows associating an observation or ProductContainerOperation to a DeviceElement
     int64 ContainerId = 5;// Allows associating an observation or ProductContainerOperation to a Container
     int64 FarmId = 6;
     int64 FieldId = 7;
     int64 CropZoneId = 8;
     int64 FacilityId = 9;
-    Location Location = 10; // Enables using Locations by reference, like in PAIL and ISO 19112.
-    repeated ContextItem ContextItems = 11;
+    ADAPT.Common.Location    Location = 10; // Enables using Locations by reference, like in PAIL and ISO 19112.
+    repeated ADAPT.Common.ContextItem   ContextItems = 11;
  }
- enum PlaceTypeEnum{
-   Location = 0; // This case produces a Place that is functionally equivalent to a PAIL / ISO 19112 Location. 
-   Facility = 1;
-   DeviceElement = 2;
-   Container = 3; 
-   Farm= 4;
-   Field = 5;        
-   CropZone = 6;
-   Mixed = 7; // Enables "adding what you know"; when there may be position, farm & field, for example.        
-}
+ message PlaceType{
+   enum PlaceTypeEnum{
+      Location    = 0; // This case produces a Place that is functionally equivalent to a PAIL / ISO 19112 Location. 
+      Facility = 1;
+      DeviceElement = 2;
+      Container = 3; 
+      Farm= 4;
+      Field = 5;        
+      CropZone = 6;
+      Mixed = 7; // Enables "adding what you know"; when there may be position, farm & field, for example.        
+   }
+ }
+ 

@@ -1,15 +1,16 @@
 syntax = "proto3";
 
-package AgGateway.ADAPT.ApplicationDataModel.Shapes;
+package ADAPT.Shapes;
 
-import "Common.proto";
 import "Representations.proto";
 
+option go_package = "github.com/maltegrosse/adapt-go/Shapes";
+
 message BoundingBox {
-    NumericRepresentationValue MinY = 1;
-    NumericRepresentationValue MinX = 2;
-    NumericRepresentationValue MaxY = 3;
-    NumericRepresentationValue MaxX = 4;
+    ADAPT.Representations.NumericRepresentationValue MinY = 1;
+    ADAPT.Representations.NumericRepresentationValue MinX = 2;
+    ADAPT.Representations.NumericRepresentationValue MaxY = 3;
+    ADAPT.Representations.NumericRepresentationValue MaxX = 4;
  }
 
  message LineString {
@@ -39,7 +40,7 @@ message BoundingBox {
 
  message Shape {
    int64 Id = 1;
-   ShapeTypeEnum Type = 2;
+   ShapeType Type = 2;
    oneof subtype {
       LinearRing LinearRing = 101;
       LineString LineString = 102;
@@ -50,13 +51,16 @@ message BoundingBox {
       Polygon Polygon = 107;
    }
  }
- enum ShapeTypeEnum {
-    LinearRing = 0;
-    LineString = 1;
-    MultiLineString = 2;
-    MultiPoint = 3;
-    MultiPolygon = 4;
-    Point = 5;
-    Polygon = 6;
-    RasterGrid = 7;
+ message ShapeType{
+   enum ShapeTypeEnum {
+      LinearRing = 0;
+      LineString = 1;
+      MultiLineString = 2;
+      MultiPoint = 3;
+      MultiPolygon = 4;
+      Point = 5;
+      Polygon = 6;
+      RasterGrid = 7;
+   }
  }
+ 

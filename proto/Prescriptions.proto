@@ -1,39 +1,46 @@
 syntax = "proto3";
 
-package AgGateway.ADAPT.ApplicationDataModel.Prescriptions;
+package ADAPT.Prescriptions;
 
 import "Common.proto";
 import "Representations.proto";
 import "Products.proto";
 import "Shapes.proto";
+import "Logistics.proto";
 
-enum ApplicationStrategyEnum {
-    RatePerArea = 0;
-    RatePerTank = 1;
-    TotalProduct = 2;
- }
+option go_package = "github.com/maltegrosse/adapt-go/Prescriptions";
+
+
+message ApplicationStrategy {
+   enum ApplicationStrategyEnum {
+      RatePerArea = 0;
+      RatePerTank = 1;
+      TotalProduct = 2;
+   }
+}
+
 
  message ManualPrescription {
-    repeated ProductUse ProductUses = 1;
-    NumericRepresentationValue TotalArea = 2;
-    NumericRepresentationValue TankAmount = 3;
+    repeated ADAPT.Products.ProductUse ProductUses = 1;
+    ADAPT.Representations.NumericRepresentationValue TotalArea = 2;
+    ADAPT.Representations.NumericRepresentationValue TankAmount = 3;
     double TotalTanks = 4;
-    ApplicationStrategyEnum ApplicationStrategy = 5;
+    ApplicationStrategy ApplicationStrategy = 5;
  }
 
  message RadialExtent {
-    NumericRepresentationValue StartAngle = 1;
-    NumericRepresentationValue EndAngle = 2;
+    ADAPT.Representations.NumericRepresentationValue StartAngle = 1;
+    ADAPT.Representations.NumericRepresentationValue EndAngle = 2;
     int64 SectionId = 3;
-    NumericRepresentationValue InnerRadius = 4;
-    NumericRepresentationValue OuterRadius = 5;
-    Point RotCtr = 6;
+    ADAPT.Representations.NumericRepresentationValue InnerRadius = 4;
+    ADAPT.Representations.NumericRepresentationValue OuterRadius = 5;
+    ADAPT.Shapes.Point RotCtr = 6;
  }
 message RadialLookupCollection {
     repeated RxRadialLookup RadialLookups = 1;
-    NumericRepresentationValue StartAngle =2 ;
-    NumericRepresentationValue EndAngle = 3;
-    Point RotCtr = 4;
+    ADAPT.Representations.NumericRepresentationValue StartAngle =2 ;
+    ADAPT.Representations.NumericRepresentationValue EndAngle = 3;
+    ADAPT.Shapes.Point RotCtr = 4;
     repeated RxShapeLookup ShapeLookups = 5;
 }
 message RadialPrescription {
@@ -41,11 +48,11 @@ message RadialPrescription {
 }
 
 message RasterGridPrescription {
-    Shape Origin = 1;
+    ADAPT.Shapes.Shape Origin = 1;
     int64 RowCount = 2;
     int64 ColumnCount = 3;
-    NumericRepresentationValue CellWidth = 4;
-    NumericRepresentationValue CellHeight = 5;
+    ADAPT.Representations.NumericRepresentationValue CellWidth = 4;
+    ADAPT.Representations.NumericRepresentationValue CellHeight = 5;
     repeated RxCellLookup Rates = 6;
  }
 
@@ -58,12 +65,12 @@ message RasterGridPrescription {
  }
  
  message RxProductLookup {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier Id = 1;
     int64 ProductId = 2;
-    NumericRepresentation Representation = 3; 
-    UnitOfMeasure UnitOfMeasure = 4; 
-    NumericRepresentationValue OutOfFieldRate = 5;
-    NumericRepresentationValue LossOfGpsRate = 6;
+    ADAPT.Representations.NumericRepresentation Representation = 3; 
+    ADAPT.Common.UnitOfMeasure UnitOfMeasure = 4; 
+    ADAPT.Representations.NumericRepresentationValue OutOfFieldRate = 5;
+    ADAPT.Representations.NumericRepresentationValue LossOfGpsRate = 6;
  }
 
  message RxRadialLookup {
@@ -71,19 +78,37 @@ message RasterGridPrescription {
    repeated RxRate RxRates  = 2;
  }
  message RxShapeLookup {
-    Shape Shape = 1;
+    ADAPT.Shapes.Shape Shape = 1;
     repeated RxRate Rates = 2;
  }
 
  message SpatialPrescription {
-    BoundingBox BoundingBox = 1;
-    RepresentationValue OutOfFieldRate = 2;
-    RepresentationValue LossOfGpsRate = 3;
+    ADAPT.Shapes.BoundingBox BoundingBox = 1;
+    ADAPT.Representations.NumericRepresentationValue OutOfFieldRate = 2;
+    ADAPT.Representations.NumericRepresentationValue LossOfGpsRate = 3;
     oneof subtype {
        RasterGridPrescription RasterGridPrescription = 101;
        VectorPrescription VectorPrescription = 102;
+       RadialPrescription RadialPrescription = 103;
     }
  }
  message VectorPrescription {
     repeated RxShapeLookup RxShapeLookups = 1;
+ }
+
+ message Prescription {
+   ADAPT.Common.CompoundIdentifier Id = 1;
+   string Description = 2;
+   ADAPT.Common.OperationType OperationType = 3;
+   int64 FieldId = 4;
+   int64 CropZoneId = 5;
+   repeated RxProductLookup RxProductLookups = 6;
+   repeated int64 ProductIds = 7;
+   repeated ADAPT.Common.ContextItem ContextItems = 8;
+   repeated ADAPT.Common.TimeScope TimeScopes = 9;
+   repeated ADAPT.Logistics.PersonRole PersonRoles = 10;
+   oneof subtype { 
+      ManualPrescription ManualPrescription = 101;
+      SpatialPrescription SpatialPrescription = 102;
+   }
  }
