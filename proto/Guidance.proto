@@ -1,14 +1,15 @@
 syntax = "proto3";
 
-package AgGateway.ADAPT.ApplicationDataModel.Guidance;
+package ADAPT.Guidance;
 
 import "Common.proto";
 import "Shapes.proto";
-import "Logistics.proto";
 import "Representations.proto";
 
+option go_package = "github.com/maltegrosse/adapt-go/Guidance";
+
 message APlus {
-   Shape Point = 1;
+   ADAPT.Shapes.Shape Point = 1;
    double Heading = 2;
  }
  message AbCurve {
@@ -16,45 +17,48 @@ message APlus {
     double Heading = 2;
     double EastShiftComponent = 3;
     double NorthShiftComponent = 4;
-    repeated Shape Shape = 5;
+    repeated ADAPT.Shapes.Shape Shape = 5;
  }
  message AbLine {
-    Shape A = 1;
-    Shape B = 2;
+    ADAPT.Shapes.Shape A = 1;
+    ADAPT.Shapes.Shape B = 2;
     double Heading = 3;
     double EastShiftComponent = 4;
     double NorthShiftComponent = 5;
  }
  message GuidanceAllocation {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier Id = 1;
     int64 GuidanceGroupId = 2;
     GuidanceShift GuidanceShift = 3;
-    repeated TimeScope TimeScopes = 4;
+    repeated ADAPT.Common.TimeScope TimeScopes = 4;
  }
- enum GuidanceExtensionEnum{
-   FromBothPoints = 0;
-   FromA = 1;
-   FromB = 2;
-   None = 3;
-}
+ message GuidanceExtension {
+   enum GuidanceExtensionEnum{
+      FromBothPoints = 0;
+      FromA = 1;
+      FromB = 2;
+      None = 3;
+   }
+ }
+
 message GuidanceGroup {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier Id = 1;
     string Description = 2;
     repeated int64 GuidancePatternIds = 3;
-    Shape BoundingPolygon = 4;
+    ADAPT.Shapes.Shape BoundingPolygon = 4;
  }
  message GuidancePattern {
-    CompoundIdentifier Id = 1;
-    GuidancePatternTypeEnum GuidancePatternType = 2;
-    GpsSource GpsSource = 3;
+    ADAPT.Common.CompoundIdentifier Id = 1;
+    GuidancePatternType GuidancePatternType = 2;
+    ADAPT.Common.GpsSource GpsSource = 3;
     string OriginalEpsgCode = 4;
     string Description = 5;
-    RepresentationValue SwathWidth = 6;
-    PropagationDirectionEnum PropagationDirection = 7;
-    GuidanceExtensionEnum Extension = 8;
+    ADAPT.Representations.NumericRepresentationValue SwathWidth = 6;
+    PropagationDirection PropagationDirection = 7;
+    GuidanceExtension Extension = 8;
     int64 NumbersOfSwathsLeft = 9;
     int64 NumbersOfSwathsRight = 10;
-    Shape BoundingPolygon = 11;
+    ADAPT.Shapes.Shape BoundingPolygon = 11;
     oneof subtype {
        AbCurve AbCurve = 101;
        AbLine AbLine = 102;
@@ -64,46 +68,53 @@ message GuidanceGroup {
        Spiral Spiral = 106;
     }
  }
+message GuidancePatternType {
+   enum GuidancePatternTypeEnum {
+      APlus = 0;
+      AbLine = 1;
+      AbCurve = 2;
+      CenterPivot = 3;
+      Spiral = 4;
+   }
+}
 
- enum GuidancePatternTypeEnum {
-    APlus = 0;
-    AbLine = 1;
-    AbCurve = 2;
-    CenterPivot = 3;
-    Spiral = 4;
- }
 
  message GuidanceShift {
     int64 GuidanceGroupId = 1;
     int64 GuidancePatterId = 2;
-    RepresentationValue EastShift = 3;
-    RepresentationValue NorthShift = 4;
-    RepresentationValue PropagationOffset = 5;
+    ADAPT.Representations.NumericRepresentationValue EastShift = 3;
+    ADAPT.Representations.NumericRepresentationValue NorthShift = 4;
+    ADAPT.Representations.NumericRepresentationValue PropagationOffset = 5;
     repeated int64 TimeScopeIds = 6 ;
  }
 
  message MultiAbLine {
     repeated GuidancePattern AbLines = 1;
  }
+message PivotGuidanceDefinition {
+   enum PivotGuidanceDefinitionEnum {
+      PivotGuidancePatternStartEndCenter = 0;
+      PivotGuidancePatternCenterRadius = 1;
+      PivotGuidancePatternThreePoints = 2;
+   }
+}
 
- enum PivotGuidanceDefinitionEnum {
-    PivotGuidancePatternStartEndCenter = 0;
-    PivotGuidancePatternCenterRadius = 1;
-    PivotGuidancePatternThreePoints = 2;
- }
- message PivotGuidancePattern {
-    Shape StartPoint = 1;
-    Shape EndPoint = 2;
-    Shape Center = 3;
-    RepresentationValue Radius = 4;
-    PivotGuidanceDefinitionEnum DefinitionMethod = 5;
- }
- enum PropagationDirectionEnum {
-    BothDirections = 0;
-    LeftOnly = 1;
-    NoPropagation = 2;
-    RightOnly = 3;
- }
+message PivotGuidancePattern {
+   ADAPT.Shapes.Shape StartPoint = 1;
+   ADAPT.Shapes.Shape EndPoint = 2;
+   ADAPT.Shapes.Shape Center = 3;
+   ADAPT.Representations.NumericRepresentationValue Radius = 4;
+   PivotGuidanceDefinition DefinitionMethod = 5;
+}
+message PropagationDirection {
+   enum PropagationDirectionEnum {
+      BothDirections = 0;
+      LeftOnly = 1;
+      NoPropagation = 2;
+      RightOnly = 3;
+   }
+}
+
  message Spiral {
-    Shape Shape = 1;
+    ADAPT.Shapes.Shape Shape = 1;
  }

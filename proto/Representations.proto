@@ -1,22 +1,17 @@
 syntax = "proto3";
 
-package AgGateway.ADAPT.ApplicationDataModel.Representations;
+package ADAPT.Representations;
 
 import "Common.proto";
 
-
-message RepresentationValue {
-   int64 Code = 1;
-   string Designator = 2;
-   int64 Color = 3;
-}
+option go_package = "github.com/maltegrosse/adapt-go/Representations";
 
 message EnumeratedRepresentation {
     repeated EnumerationMember EnumeratedMembers = 1;
     int64 RepresentationGroupId = 2;
  }
  message EnumeratedRepresentationGroup {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier Id = 1;
     string Description = 2;
  }
  message EnumeratedValue {
@@ -31,27 +26,30 @@ message EnumeratedRepresentation {
     int64 DecimalDigits = 1;
     NumericValue MinValue = 2;
     NumericValue MaxValue = 3;
-    UnitOfMeasureDimensionEnum Dimension = 4;
+    ADAPT.Common.UnitOfMeasureDimension Dimension = 4;
  }
  message NumericRepresentationValue {
    Representation Representation = 1 ; 
    NumericValue Value = 2;
-   UnitOfMeasure UserProvidedUnitOfMeasure = 3; 
+   ADAPT.Common.UnitOfMeasure UserProvidedUnitOfMeasure = 3; 
  }
  message NumericValue {
     double Value = 1;
-    UnitOfMeasure UnitOfMeasure = 2 ; 
+    ADAPT.Common.UnitOfMeasure UnitOfMeasure = 2 ; 
  }
- enum RepresentationCodeSourceEnum {
-    ADAPT = 0;
-    ISO11783_DDI = 1;
-    ISO11783_SPN = 2;
-    J1939_SPN = 3;
-    User_Defined = 4;
+ message RepresentationCodeSource{
+   enum RepresentationCodeSourceEnum {
+      ADAPT = 0;
+      ISO11783_DDI = 1;
+      ISO11783_SPN = 2;
+      J1939_SPN = 3;
+      User_Defined = 4;
+   }
  }
+ 
  message Representation {
-    CompoundIdentifier Id = 1;
-    RepresentationCodeSourceEnum CodeSource = 2;
+    ADAPT.Common.CompoundIdentifier Id = 1;
+    RepresentationCodeSource CodeSource = 2;
     string Code = 3;
     string Description = 4;
     string LongDescription = 5;

@@ -1,29 +1,31 @@
 
 syntax = "proto3";
 
-package AgGateway.ADAPT.ApplicationDataModel.FieldBounderies;
+package ADAPT.FieldBounderies;
 
 import "Common.proto";
 import "Representations.proto";
 import "Shapes.proto";
 
+option go_package = "github.com/maltegrosse/adapt-go/FieldBounderies";
+
 message ConstantOffsetHeadland {
-    RepresentationValue Value = 1;
+    ADAPT.Representations.RepresentationValue Value = 1;
  }
  message DrivenHeadland {
-    Shape SpatialData = 1;
+   ADAPT.Shapes.Shape SpatialData = 1;
  }
  message FieldBoundary {
-    CompoundIdentifier Id = 1;
+    ADAPT.Common.CompoundIdentifier Id = 1;
     string Description = 2;
     int64 FieldId = 3;
-    Shape SpatialData = 4;
-    repeated TimeScope TimeScopes = 5;
+    ADAPT.Shapes.Shape SpatialData = 4;
+    repeated ADAPT.Common.TimeScope TimeScopes = 5;
     repeated Headland Headlands = 6;
-    GpsSource GpsSource = 7;
+    ADAPT.Common.GpsSource GpsSource = 7;
     string OriginalEpsgCode = 8;
     repeated InteriorBoundaryAttribute InteriorBoundaryAttributes = 9;
-    repeated ContextItem ContextItems = 10;
+    repeated ADAPT.Common.ContextItem ContextItems = 10;
  }
 
  message Headland {
@@ -34,7 +36,7 @@ message ConstantOffsetHeadland {
     }
  }
  message InteriorBoundaryAttribute {
-    Shape Shape = 1;
+    ADAPT.Shapes.Shape Shape = 1;
     bool IsPassable = 2;
     string Description = 3;
  }

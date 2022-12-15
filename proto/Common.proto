@@ -1,10 +1,14 @@
 syntax = "proto3";
-package AgGateway.ADAPT.ApplicationDataModel.Common;
-import "Logistics.proto";
+package ADAPT.Common;
+
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/maltegrosse/adapt-go/Common";
 
 message CompoundIdentifier {
-   int64 ReferenceId = 1;
+
+   int64 ReferenceId = 1 ;
    repeated UniqueId UniqueIds = 2;
 }
 message ContextItem {
@@ -28,87 +32,118 @@ message ContextItemDefinition {
    int64 ParentId = 15;
    string Code = 16;
    int64 Version = 17;
-   ContextItemValueTypeEnum ValueType = 18;
+   ContextItemValueType ValueType = 18;
    string Description = 19;
    string AgGlossaryURL = 20;
    string AgrovocURL = 21 ;
    string DefaultUOM = 22;
    bool AllowConversion = 23;
 }
-enum ContextItemValueTypeEnum {
-   Nested = 0;
-   Enum = 1;
-   Bool = 2;
-   String = 3;
-   Double = 4;
-   Integer = 5;
+message TimeScope {
+   CompoundIdentifier Id = 1;
+   string Description = 2 ;
+   DateContext DateContext = 3;
+   google.protobuf.Timestamp TimeStamp1 = 4;
+   google.protobuf.Timestamp TimeStamp2 = 5;
+   Location Location1 = 6;
+   Location Location2 = 7;
+   google.protobuf.Duration Duration = 8;
+}
+message Location {
+   Point Position = 1;
+   repeated ContextItem ContextItems = 2;
+   GpsSource GpsSource = 3;
+   int64 ParentFacilityId = 4;
+}
+// add Point to avoid circular dependencies
+message Point {
+   double X = 1;
+   double Y = 2;
+   double Z = 3;
+}
+message ContextItemValueType{
+   enum ContextItemValueTypeEnum {
+      Nested = 0;
+      Enum = 1;
+      Bool = 2;
+      String = 3;
+      Double = 4;
+      Integer = 5;
+   }
 }
 message ContextItemEnumItem {
-   string Value = 0;
-   int64 Version = 1;
-   string Description = 2;
-   string AgGlossaryURL = 3 ;
-   string AgrovocURL = 4 ;
-   repeated Lexicalization Lexicalizations = 5;
-   repeated ContextItem Properties = 6;
+   string Value = 1;
+   int64 Version = 2;
+   string Description = 3;
+   string AgGlossaryURL = 4 ;
+   string AgrovocURL = 5 ;
+   repeated Lexicalization Lexicalizations = 6;
+   repeated ContextItem Properties = 7;
+}
+message DateContext {
+   enum DateContextEnum {
+      Approval = 0;
+      ProposedStart = 1;
+      ProposedEnd = 2;
+      CropSeason = 3; // Interval
+      TimingEvent = 4; // Interval
+      ActualStart = 5;
+      ActualEnd = 6;
+      RequestedStart = 7;
+      RequestedEnd = 8;
+      Expiration = 9;  // Relevant for Plans, Work Orders, and Recommendations
+      Creation = 10; // Relevant to any document or object instance
+      Modification = 11; // Relevant to any document or object instance
+      ValidityRange = 12; // Interval. Used for Recommendation documents, also for specialized ISO 19156 Observations (such as forecasts)
+      RequestedShipping = 13;
+      ActualShipping = 14;
+      Calibration = 15;  // Relevant to a DeviceElement (esp. Sensor)
+      Load = 16;
+      Unload = 17;
+      Suspend = 18;
+      Resume = 19;
+      Unspecified = 20;
+      Installation = 21; // When was the device, sensor, etc. installed?
+      Maintenance = 22; // When was maintenance performed on the device, sensor, etc.?
+      PhenomenonTime = 23; // Important attribute of an ISO 19156 Observation
+      ResultTime = 24; // Interval. Important attribute of an ISO 19156 Observation
+   }
 }
 
-enum DateContextEnum {
-   Approval = 0;
-   ProposedStart = 1;
-   ProposedEnd = 2;
-   CropSeason = 3; // Interval
-   TimingEvent = 4; // Interval
-   ActualStart = 5;
-   ActualEnd = 6;
-   RequestedStart = 7;
-   RequestedEnd = 8;
-   Expiration = 9;  // Relevant for Plans, Work Orders, and Recommendations
-   Creation = 10; // Relevant to any document or object instance
-   Modification = 11; // Relevant to any document or object instance
-   ValidityRange = 12; // Interval. Used for Recommendation documents, also for specialized ISO 19156 Observations (such as forecasts)
-   RequestedShipping = 13;
-   ActualShipping = 14;
-   Calibration = 15;  // Relevant to a DeviceElement (esp. Sensor)
-   Load = 16;
-   Unload = 17;
-   Suspend = 18;
-   Resume = 19;
-   Unspecified = 20;
-   Installation = 21; // When was the device, sensor, etc. installed?
-   Maintenance = 22; // When was maintenance performed on the device, sensor, etc.?
-   PhenomenonTime = 23; // Important attribute of an ISO 19156 Observation
-   ResultTime = 24; // Interval. Important attribute of an ISO 19156 Observation
+message GPCLevel {
+   enum GPCLevelEnum { 
+      Country = 0;
+      ADM1 = 1; // Administrative level 1 (e.g., US States, Canadian provinces, Russian oblasts) 
+      ADM2 = 2; // Administrative level 2 (e.g., US counties)
+   }
 }
 
-enum GPCLevelEnum { 
-   Country = 0;
-   ADM1 = 1; // Administrative level 1 (e.g., US States, Canadian provinces, Russian oblasts) 
-   ADM2 = 2; // Administrative level 2 (e.g., US counties)
+message GpsSource {
+   enum GpsSourceEnum {
+      Unknown = 0;
+      Drawn = 1;
+      MobileGPS = 2;
+      DeereRTK = 3;
+      DeereRTKX = 4;
+      DeereSF1 = 5;
+      DeereSF2 = 6;
+      DeereWAAS = 7;
+      GNSSfix = 8;
+      DGNSSfix = 9;
+      PreciseGNSS = 10;
+      RTKFixedInteger = 11;
+      RTKFloat = 12;
+      EstDRmode = 13;
+      ManualInput = 14;
+      SimulateMode = 15;
+      DesktopGeneratedData = 16;
+      Other = 17;
+      PPP = 18;
+      SBAS = 19;
+      Mechanical = 20;
+   }
 }
-enum GpsSourceEnum {
-   Unknown = 0;
-   Drawn = 1;
-   MobileGPS = 2;
-   DeereRTK = 3;
-   DeereRTKX = 4;
-   DeereSF1 = 5;
-   DeereSF2 = 6;
-   DeereWAAS = 7;
-   GNSSfix = 8;
-   DGNSSfix = 9;
-   PreciseGNSS = 10;
-   RTKFixedInteger = 11;
-   RTKFloat = 12;
-   EstDRmode = 13;
-   ManualInput = 14;
-   SimulateMode = 15;
-   DesktopGeneratedData = 16;
-   Other = 17;
-   PPP = 18;
-   SBAS = 19;
-   Mechanical = 20;
-}
+
 message GeoPoliticalContext {
    CompoundIdentifier Id = 1;
    string Code = 2;
@@ -118,12 +153,15 @@ enum IdSourceTypeEnum {
         GLN = 0;
         URI = 1;
 }
-enum IdTypeEnum {
-   UUID = 0;
-   String = 1;
-   LongInt = 2;
-   URI = 3;
+message IdType{
+   enum IdTypeEnum {
+      UUID = 0;
+      String = 1;
+      LongInt = 2;
+      URI = 3;
+   }
 }
+
 
 message Language {
    CompoundIdentifier Id = 1;
@@ -139,30 +177,34 @@ message ModelScope {
    CompoundIdentifier Id = 1;
    string Code = 2;
    string Description = 3;
-   ModelScopeTypeEnum ModelScopeType = 4;
+   ModelScopeType ModelScopeType = 4;
+}
+message ModelScopeType {
+   enum ModelScopeTypeEnum {
+      ISO11783 = 0;
+      ADAPT = 1;
+   }
 }
 
-enum ModelScopeTypeEnum {
-   ISO11783 = 0;
-   ADAPT = 1;
+message OperationType{
+   enum OperationTypeEnum {
+      Unknown = 0;
+      Fertilizing = 1;
+      SowingAndPlanting = 2;
+      CropProtection = 3;
+      Tillage = 4;
+      Baling = 5;
+      Mowing = 6;
+      Wrapping = 7;
+      Harvesting = 8;
+      ForageHarvesting = 9;
+      Transport = 10;
+      Swathing = 11;
+      Irrigation = 12;
+      DataCollection = 13;
+   }
 }
 
-enum OperationTypeEnum {
-   Unknown = 0;
-   Fertilizing = 1;
-   SowingAndPlanting = 2;
-   CropProtection = 3;
-   Tillage = 4;
-   Baling = 5;
-   Mowing = 6;
-   Wrapping = 7;
-   Harvesting = 8;
-   ForageHarvesting = 9;
-   Transport = 10;
-   Swathing = 11;
-   Irrigation = 12;
-   DataCollection = 13;
-}
 
 message Presentation {
    string Description = 1;
@@ -170,29 +212,18 @@ message Presentation {
    string DisplayFormatRegEx = 3;
    repeated int64 GeoPoliticalContextIds = 4 [packed = false];
 }
-
-enum SetupDataPedigreeEnum  {
-        LatestOnly = 0; // The system is only keeping the latest copy of setup/configuration data. 
-        MatchedByTimeInterval = 1; // The system is keeping multiple versions of setup/configuration data, and keeping them time-binned. 
-        Unknown = 2; // The strategy used by the system for tracking changes in system configuration is unknown. 
-}
-
-message TimeScope {
-
-   CompoundIdentifier Id = 1;
-   string Description = 2 ;
-   DateContextEnum DateContext = 3;
-   Timestamp TimeStamp1 = 4;
-   Timestamp TimeStamp2 = 5;
-   Location Location1 = 6;
-   Location Location2 = 7;
-   TimeSpan Duration = 8;
+message SetupDataPedigree{
+   enum SetupDataPedigreeEnum  {
+      LatestOnly = 0; // The system is only keeping the latest copy of setup/configuration data. 
+      MatchedByTimeInterval = 1; // The system is keeping multiple versions of setup/configuration data, and keeping them time-binned. 
+      Unknown = 2; // The strategy used by the system for tracking changes in system configuration is unknown. 
+   }
 }
 
 
 message UniqueId {
    string Id = 1;
-   IdTypeEnum IdType = 2;
+   IdType IdType = 2;
    string Source = 3 ; 
    IdSourceTypeEnum SourceType = 4;
 }
@@ -200,102 +231,106 @@ message UniqueId {
 message UnitOfMeasure {
    CompoundIdentifier Id = 1;
    string Code = 2;
-   UnitOfMeasureDimensionEnum Dimension = 3;
+   UnitOfMeasureDimension Dimension = 3;
    bool IsReferenceForDimension = 4;
    double Scale = 5;
    double Offset = 6;
 }
-enum UnitOfMeasureDimensionEnum {
-   PerVolume = 0;
-   Mass = 1;
-   CurrencyPerArea = 2;
-   Sack = 3;
-   Unitless = 4;
-   Seeds = 5;
-   MassPerBarrel = 6;
-   MassPerVolume = 7;
-   MassPerTime = 8;
-   CurrencyPerContainer = 9;
-   PerBale = 10;
-   Temperature = 11;
-   VolumePerMass = 12;
-   CurrencyPerTime = 13;
-   DataPointsPerTime = 14;
-   SeedsPerBag = 15;
-   Barrel = 16;
-   MassPerMass = 17;
-   VolumePerArea = 18;
-   Currency = 19;
-   PerContainer = 20;
-   Container = 21;
-   CurrencyPerBag = 22;
-   MassPerContainer = 23;
-   PerSack = 24;
-   SeedsPerContainer = 25;
-   Volume = 26;
-   VolumePerVolume = 27;
-   Time = 28;
-   BalesPerVolume = 29;
-   TimeSpan = 30;
-   Force = 31;
-   PerTime = 32;
-   MassPerBale = 33;
-   Speed = 34;
-   DistancePerPercent = 35;
-   BalesPerTime = 36;
-   VolumePerTime = 37;
-   CurrencyPerBale = 38;
-   BarrelPerArea = 39;
-   SeedsPerVolume = 40;
-   CurrencyPerVolume = 41;
-   SeedsPerSack = 42;
-   AngularVelocity = 43;
-   MassPerSeeds = 44;
-   DataPoints = 45;
-   DistancePerDegree = 46;
-   Percent = 47;
-   ElectricCurrent = 48;
-   SeedsPerTime = 49;
-   Distance = 50;
-   BalesPerArea = 51;
-   CountPerArea = 52;
-   SeedsPerArea = 53;
-   PerBag = 54;
-   Bag = 55;
-   SackPerArea = 56;
-   Rows = 57;
-   Pressure = 58;
-   ContainerPerArea = 59;
-   MassPerSack = 60;
-   MassPerBag = 61;
-   Bale = 62;
-   AreaPerTime = 63;
-   PerField = 64;
-   Angle = 65;
-   PerMass = 66;
-   BagPerArea = 67;
-   BalesPerMass = 68;
-   SeedsPerBarrel = 69;
-   Voltage = 70;
-   Area = 71;
-   Count = 72;
-   Frequency = 73;
-   Field = 74;
-   SeedsPerMass = 75;
-   MassPerArea = 76;
-   PerArea = 77;
-   MassPerDistance = 78;
-   VolumePerDistance = 79;
-   Energy = 80;
-   Power = 81;
-   Torque = 82;
-   Gear = 83;
+message UnitOfMeasureDimension {
+   enum UnitOfMeasureDimensionEnum {
+      PerVolume = 0;
+      Mass = 1;
+      CurrencyPerArea = 2;
+      Sack = 3;
+      Unitless = 4;
+      Seeds = 5;
+      MassPerBarrel = 6;
+      MassPerVolume = 7;
+      MassPerTime = 8;
+      CurrencyPerContainer = 9;
+      PerBale = 10;
+      Temperature = 11;
+      VolumePerMass = 12;
+      CurrencyPerTime = 13;
+      DataPointsPerTime = 14;
+      SeedsPerBag = 15;
+      Barrel = 16;
+      MassPerMass = 17;
+      VolumePerArea = 18;
+      Currency = 19;
+      PerContainer = 20;
+      Container = 21;
+      CurrencyPerBag = 22;
+      MassPerContainer = 23;
+      PerSack = 24;
+      SeedsPerContainer = 25;
+      Volume = 26;
+      VolumePerVolume = 27;
+      Time = 28;
+      BalesPerVolume = 29;
+      TimeSpan = 30;
+      Force = 31;
+      PerTime = 32;
+      MassPerBale = 33;
+      Speed = 34;
+      DistancePerPercent = 35;
+      BalesPerTime = 36;
+      VolumePerTime = 37;
+      CurrencyPerBale = 38;
+      BarrelPerArea = 39;
+      SeedsPerVolume = 40;
+      CurrencyPerVolume = 41;
+      SeedsPerSack = 42;
+      AngularVelocity = 43;
+      MassPerSeeds = 44;
+      DataPoints = 45;
+      DistancePerDegree = 46;
+      Percent = 47;
+      ElectricCurrent = 48;
+      SeedsPerTime = 49;
+      Distance = 50;
+      BalesPerArea = 51;
+      CountPerArea = 52;
+      SeedsPerArea = 53;
+      PerBag = 54;
+      Bag = 55;
+      SackPerArea = 56;
+      Rows = 57;
+      Pressure = 58;
+      ContainerPerArea = 59;
+      MassPerSack = 60;
+      MassPerBag = 61;
+      Bale = 62;
+      AreaPerTime = 63;
+      PerField = 64;
+      Angle = 65;
+      PerMass = 66;
+      BagPerArea = 67;
+      BalesPerMass = 68;
+      SeedsPerBarrel = 69;
+      Voltage = 70;
+      Area = 71;
+      Count = 72;
+      Frequency = 73;
+      Field = 74;
+      SeedsPerMass = 75;
+      MassPerArea = 76;
+      PerArea = 77;
+      MassPerDistance = 78;
+      VolumePerDistance = 79;
+      Energy = 80;
+      Power = 81;
+      Torque = 82;
+      Gear = 83;
+   }
 }
 
-enum UnitOfMeasureAuthorityEnum
-    {
-        UNRec20 = 0;
-        QUDT = 1;
-        UCUM = 2;
-        ADAPT = 3;
-    }
+message UnitOfMeasureAuthority {
+   enum UnitOfMeasureAuthorityEnum
+   {
+       UNRec20 = 0;
+       QUDT = 1;
+       UCUM = 2;
+       ADAPT = 3;
+   }
+}

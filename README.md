@@ -11,9 +11,14 @@ See
 - [ADAPT Github](https://github.com/ADAPT/ADAPT/)
 
 ## Overview
-Status: pre-alpha
+Status: working alpha
 
-see `proto` folder
+see `proto` and `example` folder
+
+# Changes
+- rearranged packages to avoid circular dependencies
+- switched from int32 to int64
+- wrapped enums from c# to general style, [see protobuf issue](https://github.com/protocolbuffers/protobuf/issues/67#issuecomment-289843177)
 
 ## Contributors
 - Malte Grosse

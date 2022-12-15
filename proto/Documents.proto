@@ -1,78 +1,85 @@
 syntax = "proto3";
-package AgGateway.ADAPT.ApplicationDataModel.Documents;
+package ADAPT.Documents;
 import "Common.proto";
+import "Products.proto";
 import "Representations.proto";
 import "Equipment.proto";
 import "Shapes.proto";
+import "Notes.proto";
+import "google/protobuf/timestamp.proto";
 
-enum DocRelationshipTypeEnum {
-    Casual = 0;
-    Contextual = 1;
-    Compositional = 2;
- }
+option go_package = "github.com/maltegrosse/adapt-go/Common";
 
  message Document {
-    CompoundIdentifier Id = 1;
-    repeated ContextItem ContextItems = 2;
-    repeated int64 CropIds = 3 ;
-    repeated int64 CropZoneIds = 4 ;
-    string Description = 5;
-    RepresentationValue EstimatedArea = 6;
-    repeated int64 FarmIds = 7 ;
-    repeated int64 FieldIds = 8 ;
-    int64 GrowerId = 9;
-    repeated Note Notes = 10;
-    repeated int64 PersonRoleIds = 11 ;
-    repeated TimeScope TimeScopes = 12;
-    int64 Version = 15;
-    oneof subtype {
-       Plan Plan = 101;
-       Recommendation Recommendation = 102;
-       WorkOrder WorkOrder = 103;
-       WorkRecord WorkRecord = 104;
-       Observations Observations = 105;
-    }
+   ADAPT.Common.CompoundIdentifier Id = 1;
+   repeated ADAPT.Common.ContextItem ContextItems = 2;
+   repeated int64 CropIds = 3 ;
+   repeated int64 CropZoneIds = 4 ;
+   string Description = 5;
+   ADAPT.Representations.NumericRepresentationValue EstimatedArea = 6;
+   repeated int64 FarmIds = 7 ;
+   repeated int64 FieldIds = 8 ;
+   int64 GrowerId = 9;
+   repeated ADAPT.Notes.Note Notes = 10;
+   repeated int64 PersonRoleIds = 11 ;
+   repeated ADAPT.Common.TimeScope TimeScopes = 12;
+   int64 Version = 15;
+   oneof subtype {
+      Plan Plan = 101;
+      Recommendation Recommendation = 102;
+      WorkOrder WorkOrder = 103;
+      WorkRecord WorkRecord = 104;
+      Observations Observations = 105;
+   }
  }
+ message DocRelationshipType {
+   enum DocRelationshipTypeEnum {
+      Casual = 0;
+      Contextual = 1;
+      Compositional = 2;
+   }
+ }
+
  message DocumentCorrelation {
-   CompoundIdentifier Id = 1;
-   DocRelationshipTypeEnum RelationshipType = 2;
+   ADAPT.Common.CompoundIdentifier Id = 1;
+   DocRelationshipType RelationshipType = 2;
    int64 DocumentId = 3;
    int64 OriginatingDocumentId = 4;
-   repeated TimeScope TimeScopes = 5;
+   repeated ADAPT.Common.TimeScope TimeScopes = 5;
    repeated int64 PersonRoleIds = 6 ;
 }
  message IrrCollection{
-   CompoundIdentifier Id  = 1;
-   repeated TimeScope TimeScopes = 2;
+   ADAPT.Common.CompoundIdentifier Id  = 1;
+   repeated ADAPT.Common.TimeScope TimeScopes = 2;
    IrrSpatialScope SpatialScope = 3;
-   repeated IrrFlowTagEnum FlowTags = 4;
-   Point RotCtr = 5;
+   repeated ADAPT.Equipment.IrrFlowTag FlowTags = 4;
+   ADAPT.Shapes.Point RotCtr = 5;
    repeated IrrItem IrrItems = 6; 
-   NumericRepresentationValue Pressure = 7;
-   NumericRepresentationValue EstimatedEfficiency = 8; 
+   ADAPT.Representations.NumericRepresentationValue Pressure = 7;
+   ADAPT.Representations.NumericRepresentationValue EstimatedEfficiency = 8; 
  }
 
  message IrrItem{
-   repeated TimeScope TimeScopes = 1;
+   repeated ADAPT.Common.TimeScope TimeScopes = 1;
    IrrSpatialScope SpatialScope = 2;
-   repeated IrrFlowTagEnum FlowTags = 3;
-   Point RotCtr = 4;
+   repeated ADAPT.Equipment.IrrFlowTag FlowTags = 3;
+   ADAPT.Shapes.Point RotCtr = 4;
    repeated IrrSectionFlow SectionFlows = 5;
-   NumericRepresentationValue Pressure = 6;
-   IrrErrorCodeEnum ErrorCode= 7;
-   NumericRepresentationValue EstimatedEfficiency = 8;
+   ADAPT.Representations.NumericRepresentationValue Pressure = 6;
+   ADAPT.Equipment.IrrErrorCode ErrorCode= 7;
+   ADAPT.Representations.NumericRepresentationValue EstimatedEfficiency = 8;
 
  }
 
  message IrrRadialSpatialScope{
-     NumericRepresentationValue StartAngle = 1;
-     NumericRepresentationValue EndAngle = 2;
+     ADAPT.Representations.NumericRepresentationValue StartAngle = 1;
+     ADAPT.Representations.NumericRepresentationValue EndAngle = 2;
  }
 
  message IrrRecord {
-   CompoundIdentifier Id = 1;
+   ADAPT.Common.CompoundIdentifier Id = 1;
    int64 WorkRecordId = 2;
-   repeated TimeScope TimeScopes = 3;
+   repeated ADAPT.Common.TimeScope TimeScopes = 3;
    repeated int64 PersonRoleIds = 4;
    repeated int64 WorkItemIds = 5;
    int64 GrowerId = 6;
@@ -80,90 +87,100 @@ enum DocRelationshipTypeEnum {
    int64 FieldId = 8;
    int64 CropZoneId = 9;
    IrrSpatialScope SpatialScope = 10;
-   NumericRepresentationValue TotalArea = 11;
-   NumericRepresentationValue TotalWaterVolume = 12;
-   repeated ProductUse ProductUseSummaries = 13;
+   ADAPT.Representations.NumericRepresentationValue TotalArea = 11;
+   ADAPT.Representations.NumericRepresentationValue TotalWaterVolume = 12;
+   repeated ADAPT.Products.ProductUse ProductUseSummaries = 13;
    repeated int64 IrrSystemConfigurationIds = 14;
    repeated int64 IrrSectionConfigurationIds = 15;
    repeated int64 IrrCollectionIds = 16;
-   repeated Note Notes = 17;
-   repeated ContextItem ContextItems = 18;
+   repeated ADAPT.Notes.Note Notes = 17;
+   repeated ADAPT.Common.ContextItem ContextItems = 18;
  }
 
 message IrrSectionFlow{
    int64 SectionId = 1;
-   NumericRepresentationValue Volume = 2;
-   NumericRepresentationValue Depth  = 3;
-   repeated ProductUse ProductUses  = 4;
-   MultiPolygon PolygonCoverage  = 5;
+   ADAPT.Representations.NumericRepresentationValue Volume = 2;
+   ADAPT.Representations.NumericRepresentationValue Depth  = 3;
+   repeated ADAPT.Products.ProductUse ProductUses  = 4;
+   ADAPT.Shapes.MultiPolygon PolygonCoverage  = 5;
 }
 
 message IrrSpatialScope {
    IrrRadialSpatialScope RadialScope = 1;
-   MultiPolygon MultiPolygonScope = 2;
+   ADAPT.Shapes.MultiPolygon MultiPolygonScope = 2;
 }
 message MeteredValue {
-   RepresentationValue Value = 1;
+   ADAPT.Representations.RepresentationValue Value = 1;
    int64 MeterId = 2;
    int64 DeviceConfigurationId = 3;
 }
 
 message OMCode{
-   CompoundIdentifier Id = 1;
+   ADAPT.Common.CompoundIdentifier Id = 1;
    string Code = 2;
    string Description = 3;
    repeated int64 CodeComponentIds = 4;
-   repeated ContextItem ContextItems = 5;
+   repeated ADAPT.Common.ContextItem ContextItems = 5;
 }
-enum OMCodeComponentPartEnum {
-   ComponentType=0;
-   Selector=1;
-   Value=2;
-   UoM=3;
+message OMCodeComponentPart {
+   enum OMCodeComponentPartEnum {
+      ComponentType=0;
+      Selector=1;
+      Value=2;
+      UoM=3;
+   }
 }
-enum OMCodeComponentValueTypeEnum {
-   Enum=0;
-   Bool=1;
-   String=2;
-   Double=3;
-   Integer=4;
-   DateTime=5;
-}
-enum OMSemanticResourceLevelEnum {
-   OMCode=0;
-   OMCodeComponent=1;
-   CodeComponentType=2;
-   CodeComponentSelector=3;
-   CodeComponentValue=4;
-   CodeComponentUoM=5;
-}
-enum OMSemanticResourceStatusEnum   {
-   Active = 0;
-   Deprecated = 1;
-   Candidate = 2;
-   Proprietary = 3;
+message OMCodeComponentValueType {
+   enum OMCodeComponentValueTypeEnum {
+      Enum=0;
+      Bool=1;
+      String=2;
+      Double=3;
+      Integer=4;
+      DateTime=5;
+   }
 }
 
+message OMSemanticResourceLevel {
+   enum OMSemanticResourceLevelEnum {
+      OMCode=0;
+      OMCodeComponent=1;
+      CodeComponentType=2;
+      CodeComponentSelector=3;
+      CodeComponentValue=4;
+      CodeComponentUoM=5;
+   }
+}
+message OMSemanticResourceStatus {
+   enum OMSemanticResourceStatusEnum   {
+      Active = 0;
+      Deprecated = 1;
+      Candidate = 2;
+      Proprietary = 3;
+   }
+}
+
+
 message Obs {
-   CompoundIdentifier Id = 1;
+   ADAPT.Common.CompoundIdentifier Id = 1;
    int64 OMSourceId = 2;  // OMSource reduces Obs to (mostly) key,value pair even with sensors, installation 
    int64 OMCodeId = 3; // OMCode reduces Obs to (mostly) key,value pair when installation data is not needed
    string OMCode = 4; // The string value provides the simplest form of meaning, by referring a pre-existing semantic resource by name (code).
    repeated ObsCodeComponent CodeComponents = 5;  // List of code components (by value) to allow parameters, semantic refinement      
-   repeated TimeScope TimeScopes = 6;
+   repeated ADAPT.Common.TimeScope TimeScopes = 6;
    int64 GrowerId = 7; // Optional, provides ability to put an Obs in the context of a grower
    int64 PlaceId = 8; // Optional, provides ability to put an Obs in the context of a Place 
-   Shape SpatialExtent  = 9 ;// Optional, includes Point, Polyline, and Polygon features of interest
+   ADAPT.Shapes.Shape SpatialExtent  = 9 ;// Optional, includes Point, Polyline, and Polygon features of interest
    // Note: PlaceId provides a feature of interest by reference; SpatialExtent does so by value. They are not necessarily
    // mutually exclusive.  
    string Value = 10; // The actual value of the observation. Its meaning is described by the OMCodeDefinition
    string UoMCode= 11; // ADAPT codes for units of measure (e.g., "m1s-1" for meter/second) are required here.
     // PAIL allows different UoMAuthorities; but translation must happen in the PAIL plug-in level.
-   repeated ContextItem ContextItems = 11;
+   repeated ADAPT.Common.ContextItem ContextItems = 12;
 }
 
 message ObsCodeComponent{
-   CompoundIdentifier Id = 1;
+   ADAPT.Common.CompoundIdentifier Id = 1;
    string ComponentCode = 2; // Provides a code that represents the meaning of this Code Component (code).
    string PId = 3; // Persistent identifier (presumed a URI) for this CodeComponent     
    string Description = 4; // Human-readable description of what the CodeComponent means
@@ -173,33 +190,33 @@ message ObsCodeComponent{
    string ValueUoMCode = 8; // An optional unit of measure code that qualifies the value. 
    // ADAPT codes for units of measure (e.g., "m1s-1" for meter/second) are required here.
    // PAIL allows different UoMAuthorities; but translation must happen in the PAIL plug-in level.
-   OMCodeComponentValueTypeEnum ValueType = 9;// Specifies the data type (e.g., integer, boolean) of the value. 
+   OMCodeComponentValueType ValueType = 9;// Specifies the data type (e.g., integer, boolean) of the value. 
 }
 
 message ObsCollection {
-   CompoundIdentifier Id = 1;
+   ADAPT.Common.CompoundIdentifier Id = 1;
    int64 OMSourceId  = 2; // OMSource reduces child Obs to (mostly) key,value pair even with sensors, installation 
    int64 OMCodeId  = 3;// OMCode reduces child Obs to (mostly) key,value pair when installation data is not needed
    string OMCode  = 4;// The string value provides the simplest form of meaning, by referring a pre-existing semantic resource by name (code).
    repeated ObsCodeComponent CodeComponents  = 5; // List of code components (by value) to allow parameters, semantic refinement
-   repeated TimeScope TimeScopes  = 6;
+   repeated ADAPT.Common.TimeScope TimeScopes  = 6;
    int64 GrowerId  = 7; // Optional, provides ability to put an ObsCollection in the context of a grower
    int64 PlaceId  = 8;// Optional, provides ability to put an ObsCollection in the context of a Place 
-   Shape SpatialExtent  = 9; // Optional, includes Point, Polyline, and Polygon features of interest
+   ADAPT.Shapes.Shape SpatialExtent  = 9; // Optional, includes Point, Polyline, and Polygon features of interest
    // Note: PlaceId provides a feature of interest by reference; SpatialExtent does so by value. They are not necessarily
    // mutually exclusive.  
    repeated int64 ObsCollectionIds  = 10; // Recursive!
    repeated int64 ObsIds  = 11;
-   repeated ContextItem ContextItems  = 12;       
+   repeated ADAPT.Common.ContextItem ContextItems  = 12;       
 }
 
 message ObsDataset {
-   CompoundIdentifier Id = 1;
+   ADAPT.Common.CompoundIdentifier Id = 1;
    string Description = 2; // Human-friendly description of the dataset
    string SetupURL = 3;// PAIL legacy, a URL pointing to  setup data.
-   repeated TimeScope TimeScopes = 4; // Dataset-specific timescopes (e.g., create date, start & end, etc.)    
+   repeated ADAPT.Common.TimeScope TimeScopes = 4; // Dataset-specific timescopes (e.g., create date, start & end, etc.)    
    repeated int64 ObsCollectionIds = 5; // List of references to the ObsCollections contained in the dataset
-   repeated ContextItem ContextItems = 6;   
+   repeated ADAPT.Common.ContextItem ContextItems = 6;   
 }
 
 message Observations{
@@ -207,14 +224,14 @@ message Observations{
 }
 
 message OperationSummary {
-   CompoundIdentifier Id = 1;
-   OperationTypeEnum OperationType = 2;
+   ADAPT.Common.CompoundIdentifier Id = 1;
+   ADAPT.Common.OperationType OperationType = 2;
    int64 ProductId = 3;
    int64 WorkItemOperationId = 4;
    repeated StampedMeteredValues Data = 5;
    repeated int64 EquipmentConfigurationIds = 6 ;
-   Shape CoverageShape = 7;
-   repeated ContextItem ContextItems = 8;
+   ADAPT.Shapes.Shape CoverageShape = 7;
+   repeated ADAPT.Common.ContextItem ContextItems = 8;
    string Description = 9;
 }
 message Plan {
@@ -226,22 +243,22 @@ message Recommendation {
 
 message StampedMeteredValues {
    repeated MeteredValue Values = 1;
-   TimeScope Stamp = 2;
+   ADAPT.Common.TimeScope Stamp = 2;
 }
 message StatusUpdate {
-   WorkStatusEnum Status = 1;
-   Note Note = 2;
-   Timestamp TimeStamp = 3;
+   WorkStatus Status = 1;
+   ADAPT.Notes.Note Note = 2;
+   google.protobuf.Timestamp TimeStamp = 3;
 }
 
 message Summary {
-   CompoundIdentifier Id = 1;
-   repeated TimeScope TimeScopes = 2;
+   ADAPT.Common.CompoundIdentifier Id = 1;
+   repeated ADAPT.Common.TimeScope TimeScopes = 2;
    repeated int64 PersonRoleIds = 3 ;
    repeated int64 GuidanceAllocationIds = 4 ;
    repeated int64 WorkItemIds = 5 ;
    repeated int64 LoggedDataIds = 6 ;
-   repeated Note Notes = 7;
+   repeated ADAPT.Notes.Note Notes = 7;
    repeated StampedMeteredValues SummaryData = 8;
    repeated OperationSummary OperationSummaries = 9;
    int64 WorkRecordId = 15;
@@ -249,38 +266,41 @@ message Summary {
    int64 FarmId = 17;
    int64 FieldId = 18;
    int64 CropZoneId = 19;
-   EquipmentConfigurationGroup EquipmentConfigurationGroup = 20;
+   ADAPT.Equipment.EquipmentConfigurationGroup EquipmentConfigurationGroup = 20;
 }
 message WorkItem {
-   CompoundIdentifier Id = 1;
-   repeated Note Notes = 3;
+   ADAPT.Common.CompoundIdentifier Id = 1;
+   repeated ADAPT.Notes.Note Notes = 3;
    repeated int64 PeopleRoleIds = 4 ;
    repeated int64 ReferenceLayerIds = 5 ;
    repeated int64 WorkItemOperationIds = 6 ;
    repeated int64 GuidanceAllocationIds = 7 ;
    repeated StatusUpdate StatusUpdates = 8;
    repeated int64 WorkOrderIds = 9 ;
-   repeated TimeScope TimeScopes = 10;
-   WorkItemPriorityEnum WorkItemPriority = 15;
+   repeated ADAPT.Common.TimeScope TimeScopes = 10;
+   WorkItemPriority WorkItemPriority = 15;
    int64 GrowerId = 16;
    int64 FarmId = 17;
    int64 FieldId = 18;
    int64 CropZoneId = 19;
    int64 BoundaryId = 20;
    int64 ParentDocumentId = 21;
-   EquipmentConfigurationGroup EquipmentConfigurationGroup = 22;
+   ADAPT.Equipment.EquipmentConfigurationGroup EquipmentConfigurationGroup = 22;
 }
-enum WorkItemPriorityEnum {
-   Immediately = 0;
-   SoonAsPossible = 1;
-   High = 2;
-   Medium = 3;
-   Low = 4;
+message WorkItemPriority {
+   enum WorkItemPriorityEnum {
+      Immediately = 0;
+      SoonAsPossible = 1;
+      High = 2;
+      Medium = 3;
+      Low = 4;
+   }
 }
+
 message WorkItemOperation {
-   CompoundIdentifier Id = 1;
+   ADAPT.Common.CompoundIdentifier Id = 1;
    string Description = 2;
-   OperationTypeEnum OperationType = 3;
+   ADAPT.Common.OperationType OperationType = 3;
    int64 PrescriptionId = 4;
    repeated int64 EquipmentConfigurationIds = 5;
 }
@@ -291,13 +311,16 @@ message WorkOrder {
 message WorkRecord {
    repeated int64 LoggedDataIds = 1 ;
    repeated int64 SummariesIds = 2;
-   repeated int64 IrrRecordIds = 2;
+   repeated int64 IrrRecordIds = 3;
 }
-enum WorkStatusEnum {
-   Scheduled = 0;
-   InProgress = 1;
-   Paused = 2;
-   PartiallyCompleted = 3;
-   Completed = 4;
-   Cancelled = 5;
+message WorkStatus {
+   enum WorkStatusEnum {
+      Scheduled = 0;
+      InProgress = 1;
+      Paused = 2;
+      PartiallyCompleted = 3;
+      Completed = 4;
+      Cancelled = 5;
+   }
 }
+
