@@ -7,10 +7,34 @@ import "google/protobuf/duration.proto";
 option go_package = "github.com/maltegrosse/adapt-go/Common";
 
 message CompoundIdentifier {
-
    int64 ReferenceId = 1 ;
-   repeated UniqueId UniqueIds = 2;
+   repeated UniqueId UniqueIds = 3;
 }
+
+message UniqueId {
+   string Id = 1;
+   IdType IdType = 2;
+   string Source = 3 ; 
+   IdSourceType IdSourceType = 4;
+   optional int64 ReferenceId = 201; // ref
+}
+message IdType{
+   optional string Value = 201; // ref
+   enum IdTypeEnum {
+      UUID = 0;
+      String = 1;
+      LongInt = 2;
+      URI = 3;
+   }
+}
+message IdSourceType{
+   optional string Value = 201; // ref
+   enum IdSourceTypeEnum {
+      GLN = 0;
+      URI = 1;
+   }
+}
+
 message ContextItem {
    string Code = 1;
    string Value = 2;
@@ -18,6 +42,8 @@ message ContextItem {
    repeated ContextItem NestedItems = 4;
    repeated TimeScope TimeScopes = 5;
 }
+
+
 message ContextItemDefinition {
    CompoundIdentifier Id = 1;
    repeated string Keywords = 2;
@@ -149,18 +175,7 @@ message GeoPoliticalContext {
    string Code = 2;
    string Description = 3;
 }
-enum IdSourceTypeEnum {
-        GLN = 0;
-        URI = 1;
-}
-message IdType{
-   enum IdTypeEnum {
-      UUID = 0;
-      String = 1;
-      LongInt = 2;
-      URI = 3;
-   }
-}
+
 
 
 message Language {
@@ -187,6 +202,7 @@ message ModelScopeType {
 }
 
 message OperationType{
+   string Value = 1;
    enum OperationTypeEnum {
       Unknown = 0;
       Fertilizing = 1;
@@ -221,12 +237,6 @@ message SetupDataPedigree{
 }
 
 
-message UniqueId {
-   string Id = 1;
-   IdType IdType = 2;
-   string Source = 3 ; 
-   IdSourceTypeEnum SourceType = 4;
-}
 
 message UnitOfMeasure {
    CompoundIdentifier Id = 1;

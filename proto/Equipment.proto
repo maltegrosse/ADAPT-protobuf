@@ -64,6 +64,7 @@ message DeviceElement {
     }
  }
 message DeviceElementType {
+   string Value = 1;
    enum DeviceElementTypeEnum {
       Machine = 0;
       Implement = 1;

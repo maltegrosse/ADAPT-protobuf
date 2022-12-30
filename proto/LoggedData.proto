@@ -112,6 +112,8 @@ message OperationData {
     string Description = 11;
     repeated int64 CoincidentOperationDataIds = 12;
     repeated ADAPT.Common.ContextItem ContextItems = 13;
+    repeated SpatialRecord SpatialRecords = 14;
+    repeated ADAPT.Equipment.DeviceElementUse DeviceElementUses = 15;
  }
 
  message SectionSummary {

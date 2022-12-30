@@ -19,7 +19,7 @@ option go_package = "github.com/maltegrosse/adapt-go/ADM";
 message ApplicationDataModel {
    repeated ProprietaryValue ProprietaryValues = 1;
    Catalog Catalog = 2;
-   Documents Documents = 3;
+   ADMDocuments Documents = 3;
    repeated ADAPT.ReferenceLayers.ReferenceLayer ReferenceLayers = 4;
  }
 
@@ -73,8 +73,10 @@ message ApplicationDataModel {
    repeated ADAPT.Products.PackagedProductInstance PackagedProductInstances = 35;
    repeated ADAPT.Products.Container Containers = 37;
    repeated ADAPT.Documents.ObsCodeComponent ObsCodeComponents = 38;
+   repeated ADAPT.Equipment.DeviceSeries DeviceSeries = 39;
  }
- message Documents {
+ // renamed Documents to ADMDocuments, conflicting imports
+ message ADMDocuments {
    repeated ADAPT.Equipment.DeviceElementUse DeviceElementUses = 1;
    repeated ADAPT.Documents.DocumentCorrelation DocumentCorrelations = 2;
    repeated ADAPT.Guidance.GuidanceAllocation GuidanceAllocations = 3;

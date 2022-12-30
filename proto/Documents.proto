@@ -8,7 +8,7 @@ import "Shapes.proto";
 import "Notes.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/maltegrosse/adapt-go/Common";
+option go_package = "github.com/maltegrosse/adapt-go/Documents";
 
  message Document {
    ADAPT.Common.CompoundIdentifier Id = 1;
