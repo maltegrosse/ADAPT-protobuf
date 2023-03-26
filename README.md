@@ -1,7 +1,7 @@
 # ADAPT Protobuffer
 
 ## Goal
-Create non language agnostic ADM reference model in Protobuf 3
+Create language agnostic ADM reference model in Protobuf 3
 
 ## References
 See
