@@ -15,6 +15,8 @@ Status: working alpha
 
 see `proto` and `example` folder
 
+## Diagrams
+see [/digrams](./diagrams/)
 # Changes
 - rearranged packages to avoid circular dependencies
 - switched from int32 to int64
