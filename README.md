@@ -1,3 +1,8 @@
+## This Repository is deprecated as ADAPT changed to a general json standard scheme: https://github.com/ADAPT/Standard 
+
+
+
+
 # ADAPT Protobuffer
 
 ## Goal
